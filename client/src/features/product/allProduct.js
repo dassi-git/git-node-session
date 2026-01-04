@@ -10,7 +10,7 @@ import { Rating } from 'primereact/rating';
 import { Tag } from 'primereact/tag';
 import { classNames } from 'primereact/utils';
 // import { useUppdateProductMutation } from "../basket/basketSlise";
-// import DeletProduct from "./deletProduct";
+// import DeleteProduct from "./deleteProduct";
 import { useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"
 import productById from "./productById"

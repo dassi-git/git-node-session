@@ -27,7 +27,7 @@ const Nav = () => {
                     {<Link to="/register">   register  </Link>}
                     {<Link to="/allProduct">   AllProduct   </Link>}
                     {/* {roles === "Admin" && isUserLoggedIn && <Link to="/adProduct">   addProduct   </Link>}
-                    {roles === "Admin" && isUserLoggedIn && <Link to="/updetProduct">   UpdetProduct   </Link>}
+                    {roles === "Admin" && isUserLoggedIn && <Link to="/updateProduct">   UpdateProduct   </Link>}
                     {roles === "Admin" && isUserLoggedIn && <Link to="/deleteProduct">   deleteProduct   </Link>} */}
                     {roles === "Admin" && isUserLoggedIn && <Link to="/adminproduct">   adminproduct   </Link>}
                 </div>

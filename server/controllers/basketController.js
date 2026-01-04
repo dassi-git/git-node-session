@@ -74,28 +74,37 @@ const deleteAllbasket = async (req, res) => {
     return res.json(save)
 
 }
-//עדכון סל
+//עדכון סל - הוספת מוצר או עדכון כמות
 const updateBasket = async (req, res) => {
     const { id } = req.params
+    
+    // בדיקה שהמוצר קיים במערכת לפני הכל
+    const myProduct = await Product.findOne({ _id: id })
+    if (!myProduct) {
+        return res.status(400).json({ message: "Product not found" })
+    }
+    
+    // מציאת הסל של המשתמש או יצירתו אם לא קיים
     let myBasket = await Basket.findOne({ userId: req.user._id })
     if (!myBasket) {
-        await creatProduct(req, res)
-        myBasket = await Basket.findOne({ userId: req.user._id })
+        myBasket = await Basket.create({ userId: req.user._id })
     }
-    const product = myBasket.Products.find((p) => {
-        return p.type == id
+    
+    // בדיקה אם המוצר כבר קיים בסל
+    const existingProduct = myBasket.Products.find((p) => {
+        return p.type.toString() === id
     })
-    // console.log(product, myBasket);
-    if (product)
-        product.quntity++
-    else {
-        const myProduct1 = await Product.findOne({ _id: id })
-        if (!myProduct1)
-            return res.status(400).send("not found this product")
-        myBasket.Products.push({ type: myProduct1._id })
+    
+    if (existingProduct) {
+        // אם המוצר כבר קיים - רק מעדכנים את הכמות
+        existingProduct.quntity++
+    } else {
+        // אם המוצר לא קיים - מוסיפים אותו לסל
+        myBasket.Products.push({ type: myProduct._id, quntity: 1 })
     }
+    
     const result = await myBasket.save()
-    res.send(myBasket)
+    res.json({ message: "Product added to basket successfully", basket: myBasket })
 }
 
 

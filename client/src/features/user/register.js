@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRegisterMutation } from "./userSlice";
 import {useNavigate} from "react-router-dom"
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Button } from 'primereact/button';
+import { Toast } from 'primereact/toast';
         
     
 
                 
 const Register = () => {
+    const toast = useRef(null);
     const [value, setValue] = useState('');
     const [register, { isError, isSuccess, error, isLoading }] = useRegisterMutation()
     const navigate=useNavigate();
@@ -23,9 +25,21 @@ const Register = () => {
     })
     useEffect(() => {
         if (isSuccess) {
-            navigate("/login")
+            toast.current.show({severity:'success', summary: 'הצלחה', detail: 'נרשמת בהצלחה! מעביר לדף התחברות...', life: 3000});
+            setTimeout(() => navigate("/login"), 1000);
         }
     }, [isSuccess])
+    
+    useEffect(() => {
+        if (isError) {
+            toast.current.show({
+                severity:'error', 
+                summary: 'שגיאה בהרשמה', 
+                detail: error?.data?.message || error?.error || 'אירעה שגיאה בהרשמה', 
+                life: 5000
+            });
+        }
+    }, [isError])
 const change=(e)=>{
     const {name,value}=e.target
     setFromDate({
@@ -42,33 +56,8 @@ const submit= (e)=>{
 
     return (
         <>
+               <Toast ref={toast} />
                <h2>הרשמה</h2>
-                 {isError && (
-                    <div style={{ 
-                        padding: '12px 15px', 
-                        marginBottom: '20px', 
-                        backgroundColor: '#fee', 
-                        border: '1px solid #fcc', 
-                        borderRadius: '5px', 
-                        color: '#c00',
-                        textAlign: 'center'
-                    }}>
-                        <strong>שגיאה בהרשמה:</strong> {error?.data?.message || error?.error || 'אירעה שגיאה בהרשמה'}
-                    </div>
-                 )}
-                 {isSuccess && (
-                    <div style={{ 
-                        padding: '12px 15px', 
-                        marginBottom: '20px', 
-                        backgroundColor: '#efe', 
-                        border: '1px solid #cfc', 
-                        borderRadius: '5px', 
-                        color: '#060',
-                        textAlign: 'center'
-                    }}>
-                        <strong>הרשמה מוצלחת!</strong> מעביר אותך לדף ההתחברות...
-                    </div>
-                 )}
                <form onSubmit={(e) => submit(e)}>
         <div className="card flex justify-content-center">
             <FloatLabel>

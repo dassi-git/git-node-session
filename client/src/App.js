@@ -7,8 +7,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Layout from './cpmponents/layout';
 import AllProduct from './features/product/allProduct';
 import CaeateProduct from "./features/product/CreateProduct"
-import UpdetProduct from "./features/product/updetProduct"
-import DeletProduct from "./features/product/deletProduct"
+import UpdateProduct from "./features/product/updateProduct"
+import DeleteProduct from "./features/product/deleteProduct"
 import ProductById from './features/product/productById';
 import GetBasket from './features/basket/getBasket';
 import AdminProducts from './features/product/adminProducts';
@@ -25,8 +25,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/allProduct" element={<AllProduct />} />
             <Route path="/adProduct" element={<CaeateProduct />} />
-            <Route path="/updetProduct" element={<UpdetProduct />} />
-            <Route path="/deleteProduct" element={<DeletProduct />} />
+            <Route path="/updateProduct" element={<UpdateProduct />} />
+            <Route path="/deleteProduct" element={<DeleteProduct />} />
             <Route path="/productById" element={<ProductById />} />
             <Route path="/adminproduct" element={<AdminProducts />} />
 

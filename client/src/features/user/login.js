@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLoginMutation } from "./userSlice";
 import {useNavigate} from "react-router-dom"
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Button } from 'primereact/button';
+import { Toast } from 'primereact/toast';
 import { setToken } from "./authSlice";
 /* eslint-disable react-hooks/exhaustive-deps, no-unused-vars */
 import {useSelector,useDispatch} from "react-redux"
 const Login = () => {
-    
+    const toast = useRef(null);
     const dispatch=useDispatch() 
     const [login, { isError, isSuccess, error, data }] = useLoginMutation()
     const navigate=useNavigate();
@@ -20,10 +21,22 @@ const Login = () => {
     })
     useEffect(() => {
         if (isSuccess) {
+            toast.current.show({severity:'success', summary: 'הצלחה', detail: 'התחברת בהצלחה!', life: 3000});
             dispatch(setToken(data))
-            navigate("/allProduct")
+            setTimeout(() => navigate("/allProduct"), 1000);
         }
     }, [isSuccess])
+    
+    useEffect(() => {
+        if (isError) {
+            toast.current.show({
+                severity:'error', 
+                summary: 'שגיאה בהתחברות', 
+                detail: error?.data?.message || error?.error || 'שם משתמש או סיסמה שגויים', 
+                life: 5000
+            });
+        }
+    }, [isError])
 const change=(e)=>{
     const {name,value}=e.target
     setFromDate({
@@ -38,33 +51,8 @@ const submit= (e)=>{
 
     return (
         <>
+               <Toast ref={toast} />
                <h2>התחברות</h2>
-                 {isError && (
-                    <div style={{ 
-                        padding: '12px 15px', 
-                        marginBottom: '20px', 
-                        backgroundColor: '#fee', 
-                        border: '1px solid #fcc', 
-                        borderRadius: '5px', 
-                        color: '#c00',
-                        textAlign: 'center'
-                    }}>
-                        <strong>שגיאה בהתחברות:</strong> {error?.data?.message || error?.error || 'שם משתמש או סיסמה שגויים'}
-                    </div>
-                 )}
-                 {isSuccess && (
-                    <div style={{ 
-                        padding: '12px 15px', 
-                        marginBottom: '20px', 
-                        backgroundColor: '#efe', 
-                        border: '1px solid #cfc', 
-                        borderRadius: '5px', 
-                        color: '#060',
-                        textAlign: 'center'
-                    }}>
-                        <strong>התחברות מוצלחת!</strong> מעביר אותך לדף הראשי...
-                    </div>
-                 )}
                <form onSubmit={(e) => submit(e)}>
        
         <div className="card flex justify-content-center">

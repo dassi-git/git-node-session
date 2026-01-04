@@ -6,8 +6,22 @@ const User = require("../models/User")
 const register = async (req, res) => {
     const { name, userName, adress, phone, email, password } = req.body
     console.log(req.body);
+    
+    // בדיקה שכל השדות קיימים
     if (!name || !userName || !adress || !phone || !email || !password)
         return res.status(400).json({ message: 'All fields are required' })
+    
+    // ולידציה לאימייל - בדיקה שהפורמט תקין
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ message: 'Invalid email format' })
+    }
+    
+    // ולידציה לסיסמה - בדיקה שהאורך לפחות 6 תווים
+    if (password.length < 6) {
+        return res.status(400).json({ message: 'Password must be at least 6 characters long' })
+    }
+    
     const userExist = await User.findOne({ userName: userName }).lean()
     if (userExist)
         return res.status(409).json({ message: "Duplicate username" })

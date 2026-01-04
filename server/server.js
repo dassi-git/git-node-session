@@ -16,6 +16,28 @@ app.use("/api/user",require("./routes/user"))
 app.use("/api/product",require("./routes/product"))
 app.use("/api/basket",require("./routes/basket"))
 
+// Global Error Handler - צריך להיות אחרי כל ה-routes
+app.use((err, req, res, next) => {
+    console.error('Error:', err.stack)
+    
+    const statusCode = err.statusCode || 500
+    const message = err.message || 'Internal Server Error'
+    
+    res.status(statusCode).json({
+        success: false,
+        message: message,
+        error: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    })
+})
+
+// 404 Handler - לנתיבים שלא נמצאו
+app.use((req, res) => {
+    res.status(404).json({
+        success: false,
+        message: 'Route not found'
+    })
+})
+
 mongoose.connection.once('open',()=>{
     console.log('connected ti mongooseDB');
     app.listen(PORT,()=>console.log(`server runing on ${PORT}`))

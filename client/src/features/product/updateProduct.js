@@ -9,7 +9,7 @@ import { Button } from 'primereact/button';
     
 
                 
-const UpdetProduct=()=>{
+const UpdateProduct=()=>{
     const [value, setValue] = useState('');
     const [register, { isError, isSuccess, error, isLoading }] = useUppdateProductMutation()
 
@@ -91,4 +91,4 @@ const submit= (e)=>{
         </>
     )
 }
-export default UpdetProduct
+export default UpdateProduct

@@ -10,7 +10,7 @@ import { Button } from 'primereact/button';
     
 
                 
-const DeletProduct=()=>{
+const DeleteProduct=()=>{
     // const [value, setValue] = useState('');
     const [register, { isError, isSuccess, error, isLoading }] = useDelateProductMutation()
 
@@ -70,7 +70,7 @@ const submit= (e)=>{
     )
 }
 // const [register, { isError, isSuccess, error, isLoading }] = useDelateProductMutation()
-// const DeletProduct2=(id)=>({
+// const DeleteProduct2=(id)=>({
   
 //     register(id)
 
@@ -78,4 +78,4 @@ const submit= (e)=>{
 
 // })
 
-export default DeletProduct
+export default DeleteProduct
