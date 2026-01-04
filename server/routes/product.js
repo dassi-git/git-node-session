@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
-const verifyJWT = require("../middlweware/verifyJwt")
-const admin = require("../middlweware/admin")
+const verifyJWT = require("../middleware/verifyJwt")
+const admin = require("../middleware/admin")
 
 const productController = require("../controllers/productController")
 
@@ -10,7 +10,7 @@ router.get("/:id", productController.getId)
 
 router.delete("/:id", [verifyJWT, admin], productController.deleteProduct)
 router.put("/", [verifyJWT, admin], productController.updateProduct)
-router.post("/", [verifyJWT, admin], productController.creatProdact)
+router.post("/", [verifyJWT, admin], productController.creatProduct)
 
 
 module.exports = router

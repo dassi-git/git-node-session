@@ -1,4 +1,4 @@
-
+/* eslint-disable react-hooks/exhaustive-deps, no-unused-vars */
 import { useUppdateProductMutation } from "./productSlice"
 import { useEffect, useState } from "react";
 import {useNavigate} from "react-router-dom"
@@ -9,7 +9,7 @@ import { Button } from 'primereact/button';
     
 
                 
-const UpdetProdact=()=>{
+const UpdetProduct=()=>{
     const [value, setValue] = useState('');
     const [register, { isError, isSuccess, error, isLoading }] = useUppdateProductMutation()
 
@@ -26,7 +26,7 @@ const UpdetProdact=()=>{
   
     useEffect(() => {
         if (isSuccess) {
-            navigate("/allProdact")
+            navigate("/allProduct")
         }
     }, [isSuccess])
 const change=(e)=>{
@@ -91,4 +91,4 @@ const submit= (e)=>{
         </>
     )
 }
-export default UpdetProdact
+export default UpdetProduct

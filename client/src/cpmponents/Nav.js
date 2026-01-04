@@ -25,10 +25,10 @@ const Nav = () => {
                    
                     {<Link to="/login">   login   </Link>}
                     {<Link to="/register">   register  </Link>}
-                    {<Link to="/allProdact">   AllProduct   </Link>}
-                    {/* {roles === "Admin" && isUserLoggedIn && <Link to="/adProdact">   addProdact   </Link>}
-                    {roles === "Admin" && isUserLoggedIn && <Link to="/updetProdact">   UpdetProdact   </Link>}
-                    {roles === "Admin" && isUserLoggedIn && <Link to="/deleteProdact">   deleteProdact   </Link>} */}
+                    {<Link to="/allProduct">   AllProduct   </Link>}
+                    {/* {roles === "Admin" && isUserLoggedIn && <Link to="/adProduct">   addProduct   </Link>}
+                    {roles === "Admin" && isUserLoggedIn && <Link to="/updetProduct">   UpdetProduct   </Link>}
+                    {roles === "Admin" && isUserLoggedIn && <Link to="/deleteProduct">   deleteProduct   </Link>} */}
                     {roles === "Admin" && isUserLoggedIn && <Link to="/adminproduct">   adminproduct   </Link>}
                 </div>
             </nav>

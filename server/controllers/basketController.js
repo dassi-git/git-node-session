@@ -79,20 +79,20 @@ const updateBasket = async (req, res) => {
     const { id } = req.params
     let myBasket = await Basket.findOne({ userId: req.user._id })
     if (!myBasket) {
-        await creatProdact(req, res)
+        await creatProduct(req, res)
         myBasket = await Basket.findOne({ userId: req.user._id })
     }
-    const prodact = myBasket.Products.find((p) => {
+    const product = myBasket.Products.find((p) => {
         return p.type == id
     })
-    // console.log(prodact, myBasket);
-    if (prodact)
-        prodact.quntity++
+    // console.log(product, myBasket);
+    if (product)
+        product.quntity++
     else {
-        const myProdact1 = await Product.findOne({ _id: id })
-        if (!myProdact1)
+        const myProduct1 = await Product.findOne({ _id: id })
+        if (!myProduct1)
             return res.status(400).send("not found this product")
-        myBasket.Products.push({ type: myProdact1._id })
+        myBasket.Products.push({ type: myProduct1._id })
     }
     const result = await myBasket.save()
     res.send(myBasket)
@@ -100,7 +100,7 @@ const updateBasket = async (req, res) => {
 
 
 
-const creatProdact = async (req, res) => {
+const creatProduct = async (req, res) => {
     const userId = req.user._id
 
     const myBasket = await Basket.create({ userId })
@@ -111,7 +111,7 @@ const creatProdact = async (req, res) => {
 
 
 
-module.exports = { deletebasket, updateBasket, creatProdact, deleteAllbasket, getId }
+module.exports = { deletebasket, updateBasket, creatProduct, deleteAllbasket, getId }
 
 
 

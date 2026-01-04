@@ -1,6 +1,6 @@
-
 // import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
 
+/* eslint-disable no-unused-vars */
 import { useGetAllProductQuery } from "./productSlice"
 import React, { useState, useEffect } from 'react';
 // import { ProductService } from './service/ProductService';
@@ -21,26 +21,12 @@ import { useUpdeteProductMutation } from "../basket/basketSlise";
 const AllProduct = () => {
     const navigate = useNavigate();
     const { data: products = [], isError, isLoading } = useGetAllProductQuery()
-    const [prodact] = useUpdeteProductMutation()
-
-
-    // const click = (e) => {
-    //     console.log("fghymkdtulk");
-    //     // navigate(`/productById/${e}`)
-    //     productById(e)
-
-    //     navigate(`/productById`)
-    // }
-
+    const [updateProduct] = useUpdeteProductMutation()
 
     const [layout, setLayout] = useState('grid');
     const addproduct = (id) => {
         console.log(id);
-         prodact(id)
-
-        // console.log("click");
-        // AddProductToBasket(id)
-        // console.log("click");
+         updateProduct(id)
     }
 
 
@@ -68,7 +54,6 @@ const AllProduct = () => {
                 <div className="col-12" key={product.id}>
                     <div className={classNames('flex flex-column xl:flex-row xl:align-items-start p-4 gap-4', { 'border-top-1 surface-border': index !== 0 })}>
                         <img className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={`http://localhost:8888/${product.image} `} alt={product.name} />
-                        {/* <img src={`http://localhost/:8888/1.png`}></img> */}
 
                         <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
                             <div className="flex flex-column align-items-center sm:align-items-start gap-3">
@@ -97,7 +82,6 @@ const AllProduct = () => {
     const gridItem = (product) => {
         return (
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2" key={product._id}  >
-                {/* onClick={()=>{click(product._id)}} */}
                 <div className="p-4 border-1 surface-border surface-card border-round">
                     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
                         <div className="flex align-items-center gap-2">
@@ -108,7 +92,6 @@ const AllProduct = () => {
                     </div>
                     <div className="flex flex-column align-items-center gap-3 py-5">
                         <img className="w-9 shadow-2 border-round" src={`http://localhost:8888/${product.image} `} alt={product.name} />
-                        {/* <img className="w-9 shadow-2 border-round"  src={`http://localhost:8888/${product.image} `} alt={product.name} /> */}
 
                         <div className="text-2xl font-bold">{product.name}</div>
                         <Rating value={product.rating} readOnly cancel={false}></Rating>
@@ -116,7 +99,6 @@ const AllProduct = () => {
                     <div className="flex align-items-center justify-content-between">
                         <span className="text-2xl font-semibold">${product.price}</span>
                         <Button icon="pi pi-shopping-cart" className="p-button-rounded" disabled={product.inventoryStatus === 'OUTOFSTOCK'} onClick={() => { addproduct(product._id) }}></Button>
-                        {/* <Button icon="pi-spi pi-times" className="p-button-rounded" disabled={product.inventoryStatus === 'OUTOFSTOCK'} ></Button> */}
                     </div>
                 </div>
             </div>

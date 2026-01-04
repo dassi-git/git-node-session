@@ -43,7 +43,7 @@ const updateProduct = async (req, res) => {
     return res.json(result)
 }
 
-const creatProdact = async (req, res) => {
+const creatProduct = async (req, res) => {
     const { name, price, body, exist, image } = req.body
     // console.log(req.body);
     if (!name || !price) {
@@ -51,15 +51,15 @@ const creatProdact = async (req, res) => {
         return res.status(400).send("err")
     }
     console.log("2**************");
-    const prodact1 = await Product.create({ name, price, body, exist, image })
-    return res.json(prodact1)
+    const product1 = await Product.create({ name, price, body, exist, image })
+    return res.json(product1)
 }
 
 
 
 
 
-module.exports = { deleteProduct, updateProduct, creatProdact, getAllProducts, getId }
+module.exports = { deleteProduct, updateProduct, creatProduct, getAllProducts, getId }
 
 
 

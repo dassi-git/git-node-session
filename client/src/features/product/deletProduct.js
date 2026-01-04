@@ -1,4 +1,5 @@
 
+/* eslint-disable react-hooks/exhaustive-deps, no-unused-vars */
 import { useDelateProductMutation } from "./productSlice"
 import { useEffect, useState } from "react";
 import {useNavigate} from "react-router-dom"
@@ -20,7 +21,7 @@ const DeletProduct=()=>{
 
     useEffect(() => {
         if (isSuccess) {
-            navigate("/allProdact")
+            navigate("/allProduct")
         }
     }, [isSuccess])
 // const change=(e)=>{
@@ -39,8 +40,19 @@ const submit= (e)=>{
 
     return (
         <>
-               <h2>הוספת מוצר</h2>
-                 {isError && JSON.stringify(error)}
+               <h2>מחיקת מוצר</h2>
+                 {isError && (
+                    <div style={{ 
+                        padding: '10px', 
+                        marginBottom: '15px', 
+                        backgroundColor: '#fee', 
+                        border: '1px solid #fcc', 
+                        borderRadius: '5px', 
+                        color: '#c00' 
+                    }}>
+                        <strong>שגיאה במחיקת המוצר:</strong> {error?.data?.message || error?.error || 'אירעה שגיאה לא צפויה'}
+                    </div>
+                 )}
                <form onSubmit={(e) => submit(e)}>
         <div className="card flex justify-content-center">
             <FloatLabel>

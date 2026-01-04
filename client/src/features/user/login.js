@@ -5,6 +5,7 @@ import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Button } from 'primereact/button';
 import { setToken } from "./authSlice";
+/* eslint-disable react-hooks/exhaustive-deps, no-unused-vars */
 import {useSelector,useDispatch} from "react-redux"
 const Login = () => {
     
@@ -20,7 +21,7 @@ const Login = () => {
     useEffect(() => {
         if (isSuccess) {
             dispatch(setToken(data))
-            navigate("/allProdact")
+            navigate("/allProduct")
         }
     }, [isSuccess])
 const change=(e)=>{
@@ -37,8 +38,33 @@ const submit= (e)=>{
 
     return (
         <>
-               <h2>login</h2>
-                 {isError && JSON.stringify(error)}
+               <h2>התחברות</h2>
+                 {isError && (
+                    <div style={{ 
+                        padding: '12px 15px', 
+                        marginBottom: '20px', 
+                        backgroundColor: '#fee', 
+                        border: '1px solid #fcc', 
+                        borderRadius: '5px', 
+                        color: '#c00',
+                        textAlign: 'center'
+                    }}>
+                        <strong>שגיאה בהתחברות:</strong> {error?.data?.message || error?.error || 'שם משתמש או סיסמה שגויים'}
+                    </div>
+                 )}
+                 {isSuccess && (
+                    <div style={{ 
+                        padding: '12px 15px', 
+                        marginBottom: '20px', 
+                        backgroundColor: '#efe', 
+                        border: '1px solid #cfc', 
+                        borderRadius: '5px', 
+                        color: '#060',
+                        textAlign: 'center'
+                    }}>
+                        <strong>התחברות מוצלחת!</strong> מעביר אותך לדף הראשי...
+                    </div>
+                 )}
                <form onSubmit={(e) => submit(e)}>
        
         <div className="card flex justify-content-center">

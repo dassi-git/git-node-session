@@ -1,12 +1,12 @@
+/* eslint-disable no-unused-vars */
 import { useUpdeteProductMutation } from "./basketSlise"
-
 
 const AddProductToBasket=(id)=>{
 console.log(id);
 
-    // const [prodact, { isError, isSuccess, error, isLoading }] = useUpdeteProductMutation()
+    // const [updateProduct, { isError, isSuccess, error, isLoading }] = useUpdeteProductMutation()
 
-    // prodact(id)
+    // updateProduct(id)
     // console.log("bbb");
     // Navigate("")
 // return(

@@ -42,53 +42,56 @@ const login = async (req, res) => {
 }
 
 
-// //להביא את כל המשתמשים
-//     const getAllUser=async(req,res) =>{
-//      const users=await User.find()
-//      return res.json(users)   
-//     }
+const getAllUser = async (req, res) => {
+    const users = await User.find().select('-password').lean()
+    if (!users?.length) {
+        return res.status(400).json({ message: 'No users found' })
+    }
+    return res.json(users)
+}
 
-// //מביא את המשתמש לפי הid
-//  const getId=async(req,res)=>{
-//     const {id}=req.params
-// const users=await User.findOne(id)
-// return res.json(users) 
-// }
-// //מחיקה
-// const deleteUser=async(req,res)=>{
-//     const{id}=req.params
-//     const delate=await User.findById(id)
-//     if(!delate){
-//         return res.status(400).send("eror")
-//     }
-//     const save=await delate.deleteOne()
-//     return res.json(save)
+const getUserById = async (req, res) => {
+    const { id } = req.params
+    const user = await User.findById(id).select('-password').lean()
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' })
+    }
+    return res.json(user)
+}
 
-// }
-// //עדכון משתמש
-// const updateUser=async(req,res)=>{
-//     const{id}=req.params
-//     const{name,userName,adress, phone, emeil,password}=req.body
+const deleteUser = async (req, res) => {
+    const { id } = req.params
+    const user = await User.findById(id)
+    if (!user) {
+        return res.status(400).json({ message: 'User not found' })
+    }
+    await user.deleteOne()
+    return res.json({ message: `User ${user.userName} deleted` })
+}
 
-//     if(!name || !userName||!adress||!phone||!emeil||!password){
-//         return res.status(400).send("eror")
-// }
-// const userUpdate=await User.findById(id)
-// userUpdate.name=name
-// userUpdate.userName=userName
-// userUpdate.adress=adress
-// userUpdate.phone=phone
-// userUpdate.emeil=emeil
-// userUpdate.password=password
+const updateUser = async (req, res) => {
+    const { id } = req.params
+    const { name, userName, adress, phone, email, password } = req.body
 
+    if (!name || !userName || !adress || !phone || !email || !password) {
+        return res.status(400).json({ message: 'All fields are required' })
+    }
+    const user = await User.findById(id)
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' })
+    }
+    user.name = name
+    user.userName = userName
+    user.adress = adress
+    user.phone = phone
+    user.email = email
+    user.password = await bcrypt.hash(password, 10)
+    
+    await user.save()
+    return res.json({ message: `User ${user.userName} updated` })
+}
 
-// }
-
-
-
-
-
-module.exports = { login, register }
+module.exports = { login, register, getAllUser, getUserById, deleteUser, updateUser }
 
 
 

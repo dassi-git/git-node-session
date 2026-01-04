@@ -42,8 +42,33 @@ const submit= (e)=>{
 
     return (
         <>
-               <h2>Register</h2>
-                 {isError && JSON.stringify(error)}
+               <h2>הרשמה</h2>
+                 {isError && (
+                    <div style={{ 
+                        padding: '12px 15px', 
+                        marginBottom: '20px', 
+                        backgroundColor: '#fee', 
+                        border: '1px solid #fcc', 
+                        borderRadius: '5px', 
+                        color: '#c00',
+                        textAlign: 'center'
+                    }}>
+                        <strong>שגיאה בהרשמה:</strong> {error?.data?.message || error?.error || 'אירעה שגיאה בהרשמה'}
+                    </div>
+                 )}
+                 {isSuccess && (
+                    <div style={{ 
+                        padding: '12px 15px', 
+                        marginBottom: '20px', 
+                        backgroundColor: '#efe', 
+                        border: '1px solid #cfc', 
+                        borderRadius: '5px', 
+                        color: '#060',
+                        textAlign: 'center'
+                    }}>
+                        <strong>הרשמה מוצלחת!</strong> מעביר אותך לדף ההתחברות...
+                    </div>
+                 )}
                <form onSubmit={(e) => submit(e)}>
         <div className="card flex justify-content-center">
             <FloatLabel>

@@ -6,6 +6,7 @@ import { Column } from 'primereact/column';
 // import { ProductService } from './service/ProductService';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
+/* eslint-disable no-unused-vars */
 import { FileUpload } from 'primereact/fileupload';
 import { Rating } from 'primereact/rating';
 import { Toolbar } from 'primereact/toolbar';
@@ -70,7 +71,7 @@ export default function AdminProducts() {
     };
 const [creatProduct,{isSuccess}]=useCreateProductMutation()
 const [updateProduct]=useUppdateProductMutation()
-    const saveProduct = () => {
+    const saveProduct = async () => {
         /////
        console.log("*****",product._id);
         setSubmitted(true);
@@ -83,14 +84,24 @@ const [updateProduct]=useUppdateProductMutation()
 
                 _products[index] = _product;
                 //פונקציה שליחה לעדכון
-                updateProduct(_product)
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
+                try {
+                    await updateProduct(_product).unwrap();
+                    toast.current.show({ severity: 'success', summary: 'הצלחה', detail: 'המוצר עודכן בהצלחה', life: 3000 });
+                } catch (err) {
+                    toast.current.show({ severity: 'error', summary: 'שגיאה', detail: err?.data?.message || 'שגיאה בעדכון המוצר', life: 3000 });
+                    return;
+                }
             } else {
                 _product._id = createId();
                 _product.image = 'product-placeholder.svg';
                 _products.push(_product);
-                creatProduct(product);
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
+                try {
+                    await creatProduct(product).unwrap();
+                    toast.current.show({ severity: 'success', summary: 'הצלחה', detail: 'המוצר נוצר בהצלחה', life: 3000 });
+                } catch (err) {
+                    toast.current.show({ severity: 'error', summary: 'שגיאה', detail: err?.data?.message || 'שגיאה ביצירת המוצר', life: 3000 });
+                    return;
+                }
             }
           
             setProducts(_products);
@@ -115,15 +126,19 @@ const [updateProduct]=useUppdateProductMutation()
     };
     const [delete1]=useDelateProductMutation()
 
-    const deleteProduct = () => {
-    delete1(product._id)
+    const deleteProduct = async () => {
+        try {
+            await delete1(product._id).unwrap();
+            let _products = products.filter((val) => val.id !== product.id);
 
-        let _products = products.filter((val) => val.id !== product.id);
-
-        setProducts(_products);
-        setDeleteProductDialog(false);
-        setProduct(emptyProduct);
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+            setProducts(_products);
+            setDeleteProductDialog(false);
+            setProduct(emptyProduct);
+            toast.current.show({ severity: 'success', summary: 'הצלחה', detail: 'המוצר נמחק בהצלחה', life: 3000 });
+        } catch (err) {
+            toast.current.show({ severity: 'error', summary: 'שגיאה', detail: err?.data?.message || 'שגיאה במחיקת המוצר', life: 3000 });
+            setDeleteProductDialog(false);
+        }
     };
 
     const findIndexById = (id) => {
