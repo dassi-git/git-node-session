@@ -12,6 +12,10 @@ import DeleteProduct from "./features/product/deleteProduct"
 import ProductById from './features/product/productById';
 import GetBasket from './features/basket/getBasket';
 import AdminProducts from './features/product/adminProducts';
+import NotFound from './cpmponents/NotFound';
+import RequireAuth from './cpmponents/RequireAuth';
+import RequireAdmin from './cpmponents/RequireAdmin';
+
 function App() {
   return (
     <div className="App">
@@ -28,9 +32,20 @@ function App() {
             <Route path="/updateProduct" element={<UpdateProduct />} />
             <Route path="/deleteProduct" element={<DeleteProduct />} />
             <Route path="/productById" element={<ProductById />} />
-            <Route path="/adminproduct" element={<AdminProducts />} />
+            <Route path="/adminproduct" element={
+              <RequireAdmin>
+                <AdminProducts />
+              </RequireAdmin>
+            } />
 
-            <Route path='/allProduct/basket' element={<GetBasket></GetBasket>}></Route>
+            <Route path='/allProduct/basket' element={
+              <RequireAuth>
+                <GetBasket />
+              </RequireAuth>
+            } />
+            
+            {/* 404 - Catch all unmatched routes */}
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </Router>

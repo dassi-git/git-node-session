@@ -78,10 +78,25 @@ const deleteAllbasket = async (req, res) => {
 const updateBasket = async (req, res) => {
     const { id } = req.params
     
-    // בדיקה שהמוצר קיים במערכת לפני הכל
+    // בדיקה שהמוצר קיים במערכת ובדיקת מלאי עדכני
     const myProduct = await Product.findOne({ _id: id })
     if (!myProduct) {
-        return res.status(400).json({ message: "Product not found" })
+        return res.status(404).json({ message: "המוצר לא נמצא במערכת" })
+    }
+    
+    // בדיקת מלאי - אם המוצר אזל
+    if (myProduct.productExist === "OUTOFSTOCK" || myProduct.productExist === "0") {
+        return res.status(400).json({ 
+            message: "מצטערים, המוצר אזל מהמלאי",
+            productName: myProduct.name,
+            outOfStock: true
+        })
+    }
+    
+    // בדיקה אם המלאי נמוך
+    if (myProduct.productExist === "LOWSTOCK") {
+        // ממשיכים אבל מחזירים אזהרה
+        console.log(`Warning: Product ${myProduct.name} has low stock`)
     }
     
     // מציאת הסל של המשתמש או יצירתו אם לא קיים
@@ -104,7 +119,14 @@ const updateBasket = async (req, res) => {
     }
     
     const result = await myBasket.save()
-    res.json({ message: "Product added to basket successfully", basket: myBasket })
+    
+    // הודעת הצלחה עם פרטי המוצר
+    res.json({ 
+        message: "המוצר נוסף לסל בהצלחה", 
+        basket: myBasket,
+        productName: myProduct.name,
+        stockStatus: myProduct.productExist
+    })
 }
 
 

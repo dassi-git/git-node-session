@@ -6,6 +6,7 @@ const UserControllers=require("../controllers/userController")
 
 router.post("/login",UserControllers.login)
 router.post("/register",UserControllers.register)
+router.post("/logout",UserControllers.logout)
 
 router.get("/", [verifyJWT, admin], UserControllers.getAllUser)
 router.get("/:id", verifyJWT, UserControllers.getUserById)

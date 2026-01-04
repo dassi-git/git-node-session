@@ -22,18 +22,38 @@ const register = async (req, res) => {
         return res.status(400).json({ message: 'Password must be at least 6 characters long' })
     }
     
+    // בדיקת שם משתמש כפול
     const userExist = await User.findOne({ userName: userName }).lean()
     if (userExist)
         return res.status(409).json({ message: "Duplicate username" })
-    const bcryptPassword = await bcrypt.hash(password, 10)
-    const userObj = { name, userName, adress, phone, email, password: bcryptPassword}
-    const user = await User.create(userObj)
-    if (user) {
-        return res.status(201).json({ message: `New user ${user.userName}  created` })
-    }
-    else {
-        return res.status(400).json({ message: 'Invalid user received' })
-
+    
+    // בדיקת אימייל כפול
+    const emailExist = await User.findOne({ email: email }).lean()
+    if (emailExist)
+        return res.status(409).json({ message: "Email already exists" })
+    
+    try {
+        const bcryptPassword = await bcrypt.hash(password, 10)
+        const userObj = { name, userName, adress, phone, email, password: bcryptPassword}
+        const user = await User.create(userObj)
+        if (user) {
+            return res.status(201).json({ message: `New user ${user.userName} created` })
+        } else {
+            return res.status(400).json({ message: 'Invalid user received' })
+        }
+    } catch (error) {
+        // טיפול בשגיאות MongoDB (duplicate key)
+        if (error.code === 11000) {
+            if (error.keyPattern.email) {
+                return res.status(409).json({ message: 'Email already exists' })
+            } else if (error.keyPattern.userName) {
+                return res.status(409).json({ message: 'Username already exists' })
+            } else {
+                return res.status(409).json({ message: 'Duplicate data found' })
+            }
+        }
+        console.error('Registration error:', error)
+        return res.status(500).json({ message: 'Server error during registration' })
     }
 }
 
@@ -105,7 +125,26 @@ const updateUser = async (req, res) => {
     return res.json({ message: `User ${user.userName} updated` })
 }
 
-module.exports = { login, register, getAllUser, getUserById, deleteUser, updateUser }
+const logout = async (req, res) => {
+    // בדיקה אם קיימת עוגיית refresh token
+    const cookies = req.cookies
+    
+    if (!cookies?.jwt) {
+        // אם אין עוגייה, עדיין נחזיר הצלחה (המשתמש כבר לא מחובר)
+        return res.status(204).json({ message: 'No token to clear' })
+    }
+    
+    // ניקוי העוגייה מהדפדפן
+    res.clearCookie('jwt', { 
+        httpOnly: true, 
+        sameSite: 'None', 
+        secure: true 
+    })
+    
+    return res.json({ message: 'Logout successful' })
+}
+
+module.exports = { login, register, getAllUser, getUserById, deleteUser, updateUser, logout }
 
 
 

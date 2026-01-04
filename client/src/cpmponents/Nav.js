@@ -1,10 +1,14 @@
-import { Link } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { Link, useNavigate } from "react-router-dom"
+import { useSelector, useDispatch } from "react-redux"
 import useAuth from "../features/user/useAuth"
+import { logOut } from "../features/user/authSlice"
+import { Button } from 'primereact/button'
 
 
 const Nav = () => {
     const { isUserLoggedIn } = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     console.log("isUserLoggedIn********", isUserLoggedIn);
 
     const [objToken] = useAuth()
@@ -13,6 +17,11 @@ const Nav = () => {
     let roles = null;
     if (objToken) {
         roles = objToken.role;
+    }
+
+    const handleLogout = () => {
+        dispatch(logOut())
+        navigate('/')
     }
 
     return (
@@ -30,6 +39,15 @@ const Nav = () => {
                     {roles === "Admin" && isUserLoggedIn && <Link to="/updateProduct">   UpdateProduct   </Link>}
                     {roles === "Admin" && isUserLoggedIn && <Link to="/deleteProduct">   deleteProduct   </Link>} */}
                     {roles === "Admin" && isUserLoggedIn && <Link to="/adminproduct">   adminproduct   </Link>}
+                    {isUserLoggedIn && (
+                        <Button 
+                            label="יציאה" 
+                            icon="pi pi-sign-out" 
+                            onClick={handleLogout}
+                            className="p-button-link p-button-danger"
+                            style={{ marginRight: '10px' }}
+                        />
+                    )}
                 </div>
             </nav>
         </>

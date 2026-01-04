@@ -18,6 +18,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
+import { Skeleton } from 'primereact/skeleton';
 import {useCreateProductMutation,useDelateProductMutation,useUppdateProductMutation,useGetAllProductQuery}from "./productSlice"
 export default function AdminProducts() {
     let emptyProduct = {
@@ -42,10 +43,10 @@ export default function AdminProducts() {
     const [globalFilter, setGlobalFilter] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
-    const {data:getAllProduct=[]}=useGetAllProductQuery()
+    const {data:getAllProduct=[], isLoading}=useGetAllProductQuery()
     useEffect(() => {
         setProducts(getAllProduct)
-    }, []);
+    }, [getAllProduct]);
 
     const formatCurrency = (value) => {
         return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
@@ -288,6 +289,32 @@ const [updateProduct]=useUppdateProductMutation()
             <Button label="Yes" icon="pi pi-check" severity="danger" onClick={deleteSelectedProducts} />
         </React.Fragment>
     );
+
+    if (isLoading) {
+        return (
+            <div>
+                <Toast ref={toast} />
+                <div className="card">
+                    <div className="mb-4 flex justify-content-between">
+                        <Skeleton width="10rem" height="3rem"></Skeleton>
+                        <Skeleton width="10rem" height="3rem"></Skeleton>
+                    </div>
+                    <div className="mb-3">
+                        <Skeleton width="100%" height="3rem"></Skeleton>
+                    </div>
+                    {Array.from({ length: 5 }).map((_, i) => (
+                        <div key={i} className="flex align-items-center p-3 border-bottom-1 surface-border">
+                            <Skeleton width="3rem" height="3rem" className="mr-3"></Skeleton>
+                            <Skeleton width="15rem" height="1.5rem" className="mr-3"></Skeleton>
+                            <Skeleton width="8rem" height="1.5rem" className="mr-3"></Skeleton>
+                            <Skeleton width="5rem" height="1.5rem" className="ml-auto mr-2"></Skeleton>
+                            <Skeleton width="5rem" height="1.5rem"></Skeleton>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div>

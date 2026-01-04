@@ -18,8 +18,14 @@ const authSlice=createSlice({
             state=""
             state.isUserLoggedIn=false
             localStorage.removeItem("token")
+        },
+        logOut:(state)=>{
+            state.token=""
+            state.isUserLoggedIn=false
+            state.userFullName=""
+            localStorage.removeItem("token")
         }
     }
 })
 export default authSlice.reducer
-export const {setToken,removeToken}=authSlice.actions
+export const {setToken,removeToken,logOut}=authSlice.actions

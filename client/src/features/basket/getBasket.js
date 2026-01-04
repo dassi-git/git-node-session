@@ -13,6 +13,7 @@ import { Tag } from 'primereact/tag';
 import { useGetBasketQuery, useUpdeteProductMutation } from './basketSlise';
 import { useDeleteProductMutation } from "../basket/basketSlise";
 import {useDeletebasketMutation}from"../basket/basketSlise"
+import { useNavigate } from 'react-router-dom';
 export default function GetBasket() {
     let emptyProduct = {
         id: null,
@@ -26,7 +27,7 @@ export default function GetBasket() {
         inventoryStatus: 'INSTOCK'
     };
 
-    const [products, setProducts] = useState(null);
+    const [products, setProducts] = useState([]);
     const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
@@ -41,10 +42,9 @@ export default function GetBasket() {
 
     useEffect(() => {
         if (isSuccess) {
-
             setProducts(basket)
         }
-    }, [isSuccess],[products]);
+    }, [isSuccess, basket]);
     const formatCurrency = (value) => {
         return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
     };
@@ -64,6 +64,7 @@ export default function GetBasket() {
     };
     const [register] = useDeleteProductMutation()
     const [deleteBasket] = useDeletebasketMutation()
+    const navigate = useNavigate();
 
     const deleteProduct = () => {
         let _products = products.filter((val) => val.id !== product.id);
@@ -191,25 +192,59 @@ export default function GetBasket() {
     return (
         <div>
             <Toast ref={toast} />
-            <div className="card">
-                <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+            
+            {/* Empty basket state */}
+            {products.length === 0 ? (
+                <div style={{ 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    minHeight: '60vh',
+                    textAlign: 'center',
+                    padding: '2rem'
+                }}>
+                    <i className="pi pi-shopping-cart" style={{ 
+                        fontSize: '8rem', 
+                        color: '#dee2e6',
+                        marginBottom: '1.5rem'
+                    }}></i>
+                    <h2 style={{ color: '#6c757d', marginBottom: '1rem' }}>
+                        הסל שלך ריק
+                    </h2>
+                    <p style={{ color: '#adb5bd', marginBottom: '2rem', fontSize: '1.1rem' }}>
+                        נראה שעדיין לא הוספת מוצרים לסל הקניות
+                    </p>
+                    <Button 
+                        label="חזרה לחנות כדי להתחיל לקנות" 
+                        icon="pi pi-arrow-left" 
+                        severity="success" 
+                        size="large"
+                        onClick={() => navigate('/allProduct')}
+                        style={{ fontSize: '1.1rem', padding: '0.75rem 2rem' }}
+                    />
+                </div>
+            ) : (
+                <div className="card">
+                    <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
 
-                <DataTable ref={dt} value={products} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)}
-                    dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
-                    paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter} header={header}>
-                    {/* סימון v */}
-                    <Column selectionMode="multiple" exportable={false}></Column>
-                    <Column field="name" header="Name" sortable style={{ minWidth: '16rem' }}></Column>
-                    <Column field="image" header="Image" body={imageBodyTemplate}></Column>
-                    <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
-                    <Column field="quntity" header="quntity" body={quntityTemplate} sortable style={{ minWidth: '8rem' }}></Column>
-                    <Column field="body" header="body" sortable style={{ minWidth: '10rem' }}></Column>
-                    <Column field="rating" header="Reviews" body={ratingBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
-                    <Column field="inventoryStatus" header="Status" body={statusBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
-                    <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
-                </DataTable>
-            </div>
+                    <DataTable ref={dt} value={products} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)}
+                        dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
+                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter} header={header}>
+                        {/* סימון v */}
+                        <Column selectionMode="multiple" exportable={false}></Column>
+                        <Column field="name" header="Name" sortable style={{ minWidth: '16rem' }}></Column>
+                        <Column field="image" header="Image" body={imageBodyTemplate}></Column>
+                        <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
+                        <Column field="quntity" header="quntity" body={quntityTemplate} sortable style={{ minWidth: '8rem' }}></Column>
+                        <Column field="body" header="body" sortable style={{ minWidth: '10rem' }}></Column>
+                        <Column field="rating" header="Reviews" body={ratingBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
+                        <Column field="inventoryStatus" header="Status" body={statusBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
+                        <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
+                    </DataTable>
+                </div>
+            )}
 
             <Dialog visible={deleteProductDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
                 <div className="confirmation-content">
