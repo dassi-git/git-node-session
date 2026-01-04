@@ -21,12 +21,15 @@ import productById from "./productById"
 import GetBasket from "../basket/getBasket";
 import AddProductToBasket from "../basket/addProductToBasket";
 import { useUpdeteProductMutation } from "../basket/basketSlise";
+import useAuth from '../user/useAuth';
 
 const AllProduct = () => {
     const navigate = useNavigate();
     const { data: products = [], isError, isLoading } = useGetAllProductQuery()
     const [updateProduct, { isLoading: isAddingToCart }] = useUpdeteProductMutation()
     const { isUserLoggedIn } = useSelector((state) => state.auth)
+    const [objToken] = useAuth();
+    const isAdmin = objToken?.role === 'Admin';
     const toast = useRef(null);
     const [addingProductId, setAddingProductId] = useState(null);
 
@@ -111,22 +114,33 @@ const AllProduct = () => {
                             </div>
                             <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
                                 <span className="text-2xl font-semibold">${product.price}</span>
-                                {isUserLoggedIn ? (
-                                    <Button 
-                                        icon={addingProductId === product._id ? "pi pi-spin pi-spinner" : "pi pi-shopping-cart"}
-                                        className="p-button-rounded" 
-                                        disabled={product.inventoryStatus === 'OUTOFSTOCK' || addingProductId === product._id} 
-                                        onClick={() => { addproduct(product._id) }}
-                                        loading={addingProductId === product._id}
-                                    />
-                                ) : (
-                                    <Button 
-                                        label="התחבר" 
-                                        icon="pi pi-sign-in" 
-                                        className="p-button-sm p-button-outlined" 
-                                        onClick={() => navigate('/login')}
-                                    />
-                                )}
+                                <div className="flex gap-2">
+                                    {isAdmin && (
+                                        <Button 
+                                            icon="pi pi-pencil" 
+                                            className="p-button-rounded p-button-warning" 
+                                            onClick={() => navigate('/updateProduct', { state: { product } })}
+                                            tooltip="ערוך מוצר"
+                                            tooltipOptions={{ position: 'top' }}
+                                        />
+                                    )}
+                                    {isUserLoggedIn ? (
+                                        <Button 
+                                            icon={addingProductId === product._id ? "pi pi-spin pi-spinner" : "pi pi-shopping-cart"}
+                                            className="p-button-rounded" 
+                                            disabled={product.inventoryStatus === 'OUTOFSTOCK' || addingProductId === product._id} 
+                                            onClick={() => { addproduct(product._id) }}
+                                            loading={addingProductId === product._id}
+                                        />
+                                    ) : (
+                                        <Button 
+                                            label="התחבר" 
+                                            icon="pi pi-sign-in" 
+                                            className="p-button-sm p-button-outlined" 
+                                            onClick={() => navigate('/login')}
+                                        />
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -155,22 +169,33 @@ const AllProduct = () => {
                     </div>
                     <div className="flex align-items-center justify-content-between">
                         <span className="text-2xl font-semibold">${product.price}</span>
-                        {isUserLoggedIn ? (
-                            <Button 
-                                icon={addingProductId === product._id ? "pi pi-spin pi-spinner" : "pi pi-shopping-cart"}
-                                className="p-button-rounded" 
-                                disabled={product.inventoryStatus === 'OUTOFSTOCK' || addingProductId === product._id} 
-                                onClick={() => { addproduct(product._id) }}
-                                loading={addingProductId === product._id}
-                            />
-                        ) : (
-                            <Button 
-                                label="התחבר" 
-                                icon="pi pi-sign-in" 
-                                className="p-button-sm p-button-outlined" 
-                                onClick={() => navigate('/login')}
-                            />
-                        )}
+                        <div className="flex gap-2">
+                            {isAdmin && (
+                                <Button 
+                                    icon="pi pi-pencil" 
+                                    className="p-button-rounded p-button-warning" 
+                                    onClick={() => navigate('/updateProduct', { state: { product } })}
+                                    tooltip="ערוך מוצר"
+                                    tooltipOptions={{ position: 'top' }}
+                                />
+                            )}
+                            {isUserLoggedIn ? (
+                                <Button 
+                                    icon={addingProductId === product._id ? "pi pi-spin pi-spinner" : "pi pi-shopping-cart"}
+                                    className="p-button-rounded" 
+                                    disabled={product.inventoryStatus === 'OUTOFSTOCK' || addingProductId === product._id} 
+                                    onClick={() => { addproduct(product._id) }}
+                                    loading={addingProductId === product._id}
+                                />
+                            ) : (
+                                <Button 
+                                    label="התחבר" 
+                                    icon="pi pi-sign-in" 
+                                    className="p-button-sm p-button-outlined" 
+                                    onClick={() => navigate('/login')}
+                                />
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

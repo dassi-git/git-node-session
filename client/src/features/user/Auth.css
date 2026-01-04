@@ -191,3 +191,44 @@
         padding: 1rem;
     }
 }
+
+/* Success Card Styling */
+.success-card {
+    text-align: center;
+}
+
+.success-icon {
+    font-size: 5rem;
+    color: #22c55e;
+    margin-bottom: 1.5rem;
+    animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.success-message {
+    margin: 2rem 0;
+    color: #4b5563;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.email-display {
+    color: #667eea;
+    font-weight: 600;
+    font-size: 1.2rem;
+    margin: 1rem 0;
+}
+
+.auth-actions {
+    margin-top: 2rem;
+}

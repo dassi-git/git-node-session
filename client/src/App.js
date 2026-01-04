@@ -2,6 +2,8 @@
 import './App.css';
 import Register from './features/user/register';
 import Login from './features/user/login';
+import ForgotPassword from './features/user/ForgotPassword';
+import ResetPassword from './features/user/ResetPassword';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import Layout from './cpmponents/layout';
@@ -13,6 +15,8 @@ import DeleteProduct from "./features/product/deleteProduct"
 import ProductById from './features/product/productById';
 import GetBasket from './features/basket/getBasket';
 import AdminProducts from './features/product/adminProducts';
+import AdminUserList from './features/user/AdminUserList';
+import UserProfile from './features/user/UserProfile';
 import NotFound from './cpmponents/NotFound';
 import RequireAuth from './cpmponents/RequireAuth';
 import RequireAdmin from './cpmponents/RequireAdmin';
@@ -29,20 +33,54 @@ function App() {
             <Route index element={<Home />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
             <Route path="/allProduct" element={<AllProduct />} />
-            <Route path="/adProduct" element={<CaeateProduct />} />
-            <Route path="/updateProduct" element={<UpdateProduct />} />
-            <Route path="/deleteProduct" element={<DeleteProduct />} />
-            <Route path="/productById" element={<ProductById />} />
+            
+            {/* Admin Routes - Protected */}
             <Route path="/adminproduct" element={
               <RequireAdmin>
                 <AdminProducts />
               </RequireAdmin>
             } />
-
+            <Route path="/adminusers" element={
+              <RequireAdmin>
+                <AdminUserList />
+              </RequireAdmin>
+            } />
+            <Route path="/adProduct" element={
+              <RequireAdmin>
+                <CaeateProduct />
+              </RequireAdmin>
+            } />
+            <Route path="/updateProduct" element={
+              <RequireAdmin>
+                <UpdateProduct />
+              </RequireAdmin>
+            } />
+            <Route path="/deleteProduct" element={
+              <RequireAdmin>
+                <DeleteProduct />
+              </RequireAdmin>
+            } />
+            
+            {/* Public Routes */}
+            <Route path="/productById" element={<ProductById />} />
+            
+            {/* User Routes - Protected */}
+            <Route path='/basket' element={
+              <RequireAuth>
+                <GetBasket />
+              </RequireAuth>
+            } />
             <Route path='/allProduct/basket' element={
               <RequireAuth>
                 <GetBasket />
+              </RequireAuth>
+            } />
+            <Route path='/profile' element={
+              <RequireAuth>
+                <UserProfile />
               </RequireAuth>
             } />
             

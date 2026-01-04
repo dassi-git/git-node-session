@@ -12,56 +12,9 @@ const RequireAdmin = ({ children }) => {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
-    // אם המשתמש מחובר אבל לא Admin - העבר לדף "אין הרשאה"
+    // אם המשתמש מחובר אבל לא Admin - העבר לדף הבית
     if (objToken?.role !== 'Admin') {
-        return (
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                minHeight: '60vh',
-                textAlign: 'center',
-                padding: '2rem'
-            }}>
-                <i className="pi pi-ban" style={{ 
-                    fontSize: '5rem', 
-                    color: '#ef4444',
-                    marginBottom: '1rem'
-                }}></i>
-                
-                <h1 style={{ 
-                    fontSize: '2rem', 
-                    marginBottom: '1rem',
-                    color: '#495057'
-                }}>
-                    אין לך הרשאה לגשת לעמוד זה
-                </h1>
-                
-                <p style={{ 
-                    fontSize: '1.1rem', 
-                    color: '#6c757d',
-                    marginBottom: '2rem'
-                }}>
-                    עמוד זה מיועד למנהלי המערכת בלבד.
-                </p>
-                
-                <button 
-                    onClick={() => window.location.href = '/allProduct'}
-                    style={{
-                        padding: '0.75rem 2rem',
-                        fontSize: '1rem',
-                        backgroundColor: '#3b82f6',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '5px',
-                        cursor: 'pointer'
-                    }}
-                >
-                    חזור לדף הבית
-                </button>
-            </div>
-        );
+        return <Navigate to="/" replace />;
     }
 
     // אם המשתמש הוא Admin - אפשר גישה

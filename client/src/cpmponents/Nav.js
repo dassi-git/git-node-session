@@ -34,7 +34,10 @@ const Nav = () => {
                     <div className="nav-links">
                         <Link to="/">דף הבית</Link>
                         <Link to="/allProduct">מוצרים</Link>
+                        {isUserLoggedIn && <Link to="/basket">סל קניות</Link>}
+                        {isUserLoggedIn && <Link to="/profile">הפרופיל שלי</Link>}
                         {roles === "Admin" && isUserLoggedIn && <Link to="/adminproduct">ניהול מוצרים</Link>}
+                        {roles === "Admin" && isUserLoggedIn && <Link to="/adminusers">ניהול משתמשים</Link>}
                         {!isUserLoggedIn && <Link to="/login">התחברות</Link>}
                         {!isUserLoggedIn && <Link to="/register">הרשמה</Link>}
                     </div>

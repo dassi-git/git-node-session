@@ -185,6 +185,9 @@ const submit= (e)=>{
                 
                 <div className="auth-footer">
                     <p className="auth-footer-text">
+                        <Link to="/forgot-password" className="auth-footer-link">שכחתי סיסמה</Link>
+                    </p>
+                    <p className="auth-footer-text">
                         עדיין לא רשום? <Link to="/register" className="auth-footer-link">הרשם עכשיו</Link>
                     </p>
                 </div>
