@@ -5,6 +5,7 @@ import Login from './features/user/login';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 import Layout from './cpmponents/layout';
+import Home from './components/Home';
 import AllProduct from './features/product/allProduct';
 import CaeateProduct from "./features/product/CreateProduct"
 import UpdateProduct from "./features/product/updateProduct"
@@ -25,6 +26,7 @@ function App() {
         <Routes>
 
           <Route path='/' element={<Layout></Layout>}>
+            <Route index element={<Home />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/allProduct" element={<AllProduct />} />

@@ -1,19 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
+import { DataView } from 'primereact/dataview';
 import { Toast } from 'primereact/toast';
 import { Button } from 'primereact/button';
 import { Rating } from 'primereact/rating';
-import { Toolbar } from 'primereact/toolbar';
-import { IconField } from 'primereact/iconfield';
-import { InputIcon } from 'primereact/inputicon';
 import { Dialog } from 'primereact/dialog';
-import { InputText } from 'primereact/inputtext';
-import { Tag } from 'primereact/tag';
 import { useGetBasketQuery, useUpdeteProductMutation } from './basketSlise';
 import { useDeleteProductMutation } from "../basket/basketSlise";
 import {useDeletebasketMutation}from"../basket/basketSlise"
 import { useNavigate } from 'react-router-dom';
+import './Basket.css';
 export default function GetBasket() {
     let emptyProduct = {
         id: null,
@@ -28,15 +23,10 @@ export default function GetBasket() {
     };
 
     const [products, setProducts] = useState([]);
-    const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
     const [product, setProduct] = useState(emptyProduct);
-    const [selectedProducts, setSelectedProducts] = useState(null);
-    const [submitted, setSubmitted] = useState(false);
-    const [globalFilter, setGlobalFilter] = useState(null);
     const toast = useRef(null);
-    const dt = useRef(null);
 
     const { data: basket = [], isSuccess } = useGetBasketQuery()
 
@@ -64,205 +54,384 @@ export default function GetBasket() {
     };
     const [register] = useDeleteProductMutation()
     const [deleteBasket] = useDeletebasketMutation()
+    const [plus] = useUpdeteProductMutation()
     const navigate = useNavigate();
 
-    const deleteProduct = () => {
-        let _products = products.filter((val) => val.id !== product.id);
-
-        register(product._id)
-        setProducts(_products)
-         toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-         setDeleteProductDialog(false);
-        
-    };
-
-   
-    const exportCSV = () => {
-        dt.current.exportCSV();
+    const deleteProduct = async () => {
+        try {
+            await register(product._id).unwrap();
+            let _products = products.filter((val) => val.id !== product.id);
+            setProducts(_products);
+            toast.current.show({ severity: 'success', summary: 'הצלחה', detail: 'המוצר הוסר מהסל', life: 3000 });
+            setDeleteProductDialog(false);
+        } catch (error) {
+            toast.current.show({ 
+                severity: 'error', 
+                summary: 'שגיאה', 
+                detail: error?.data?.message || 'לא הצלחנו להסיר את המוצר', 
+                life: 3000 
+            });
+        }
     };
 
     const confirmDeleteSelected = () => {
         setDeleteProductsDialog(true);
     };
 
-    const deleteSelectedProducts = () => {
-        //  let _products = products.filter((val) => !selectedProducts.includes(val));
-
-             deleteBasket()
-             setProducts([])
-             toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-             setDeleteProductsDialog(false);
-             
-
+    const deleteSelectedProducts = async () => {
+        try {
+            await deleteBasket().unwrap();
+            setProducts([]);
+            toast.current.show({ severity: 'success', summary: 'הצלחה', detail: 'הסל נוקה בהצלחה', life: 3000 });
+            setDeleteProductsDialog(false);
+        } catch (error) {
+            toast.current.show({ 
+                severity: 'error', 
+                summary: 'שגיאה', 
+                detail: error?.data?.message || 'לא הצלחנו לרוקן את הסל', 
+                life: 3000 
+            });
+        }
     };
-
-    
 
     const leftToolbarTemplate = () => {
         return (
-            <div className="flex flex-wrap gap-2">
-                {/* <Button label="New" icon="pi pi-plus" severity="success" onClick={openNew} /> */}
-                <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} />
+            <div className="flex flex-wrap gap-2 align-items-center">
+                <Button 
+                    label="המשך קניות" 
+                    icon="pi pi-shopping-bag" 
+                    outlined
+                    onClick={() => navigate('/allProduct')}
+                />
+                <Button 
+                    label="רוקן סל" 
+                    icon="pi pi-trash" 
+                    severity="danger" 
+                    outlined
+                    onClick={confirmDeleteSelected} 
+                    disabled={!products || products.length === 0} 
+                />
             </div>
         );
     };
 
     const rightToolbarTemplate = () => {
-        return <Button label="Export" icon="pi pi-upload" className="p-button-help" onClick={exportCSV} />;
-    };
-
-    const imageBodyTemplate = (rowData) => {
-        return <img src={`http://localhost:8888/${rowData.image} `} className="shadow-2 border-round" style={{ width: '64px' }} />;
-    };
-
-    const priceBodyTemplate = (rowData) => {
-        return formatCurrency(rowData.price);
-    };
-    
-    const quntityTemplate = (rowData) => {
-    
-        // פונקציה שמחזירה כמות
-        console.log(rowData.quantity);
-        return rowData.quantity;
-
-    };
-
-    const ratingBodyTemplate = (rowData) => {
-        return <Rating value={rowData.rating} readOnly cancel={false} />;
-    };
-
-    const statusBodyTemplate = (rowData) => {
-        return <Tag value={rowData.inventoryStatus} severity={getSeverity(rowData)}></Tag>;
-    };
-    const [plus] = useUpdeteProductMutation()
-
-    const actionBodyTemplate = (rowData) => {
-        // console.log("*******",rowData);
+        const totalItems = products.reduce((sum, product) => sum + product.quantity, 0);
+        const totalPrice = products.reduce((sum, product) => sum + (product.price * product.quantity), 0);
+        
         return (
-            <React.Fragment>
-                {/* <Button icon="pi pi-pencil" rounded outlined className="mr-2" onClick={() => editProduct(rowData)} /> */}
-                <Button icon="pi pi-trash" rounded outlined severity="danger" onClick={() => confirmDeleteProduct(rowData)} />
-                <Button icon="pi pi-minus" rounded outlined severity="danger" onClick={() => confirmDeleteProduct(rowData)} />
-                <Button icon="pi pi-plus" rounded outlined severity="danger" onClick={() => plus(rowData._id)} />
-
-
-            </React.Fragment>
+            <div className="flex flex-wrap gap-3 align-items-center">
+                <div className="flex flex-column align-items-end">
+                    <span style={{ fontSize: '0.9rem', color: '#6c757d' }}>סה"כ פריטים: {totalItems}</span>
+                    <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#667eea' }}>
+                        {formatCurrency(totalPrice)}
+                    </span>
+                </div>
+                <Button 
+                    label="המשך לתשלום" 
+                    icon="pi pi-credit-card" 
+                    className="basket-checkout-button"
+                    size="large"
+                    onClick={() => toast.current.show({ 
+                        severity: 'info', 
+                        summary: 'בקרוב', 
+                        detail: 'מערכת התשלומים תהיה זמינה בקרוב', 
+                        life: 3000 
+                    })}
+                />
+            </div>
         );
     };
 
-    const getSeverity = (product) => {
-        switch (product.inventoryStatus) {
-            case 'INSTOCK':
-                return 'success';
+    const itemTemplate = (product) => {
+        const totalPrice = product.price * product.quantity;
+        
+        return (
+            <div className="basket-item-card">
+                <div className="basket-item-content">
+                    {/* Product Image */}
+                    <div className="basket-item-image">
+                        <img 
+                            src={`http://localhost:8888/${product.image}`} 
+                            alt={product.name}
+                        />
+                    </div>
+                    
+                    {/* Product Details */}
+                    <div className="basket-item-details">
+                        <h3 className="basket-item-name">{product.name}</h3>
+                        <Rating value={product.rating} readOnly cancel={false} className="basket-item-rating" />
+                        <p className="basket-item-description">{product.body}</p>
+                    </div>
+                    
+                    {/* Quantity Controls */}
+                    <div className="basket-item-quantity">
+                        <span className="basket-item-label">כמות</span>
+                        <div className="basket-quantity-controls">
+                            <Button 
+                                icon="pi pi-minus" 
+                                rounded 
+                                outlined 
+                                severity="secondary"
+                                onClick={() => handleDecreaseQuantity(product)}
+                                disabled={product.quantity <= 1}
+                            />
+                            <span className="basket-quantity-value">{product.quantity}</span>
+                            <Button 
+                                icon="pi pi-plus" 
+                                rounded 
+                                outlined 
+                                severity="success"
+                                onClick={() => handleIncreaseQuantity(product._id)}
+                            />
+                        </div>
+                    </div>
+                    
+                    {/* Price Section */}
+                    <div className="basket-item-price-section">
+                        <div className="basket-price-details">
+                            <span className="basket-item-label">מחיר יחידה</span>
+                            <span className="basket-unit-price">{formatCurrency(product.price)}</span>
+                        </div>
+                        <div className="basket-price-details">
+                            <span className="basket-item-label">סה״כ</span>
+                            <span className="basket-total-price">{formatCurrency(totalPrice)}</span>
+                        </div>
+                    </div>
+                    
+                    {/* Delete Button */}
+                    <div className="basket-item-actions">
+                        <Button 
+                            icon="pi pi-trash" 
+                            rounded 
+                            text
+                            severity="danger" 
+                            onClick={() => confirmDeleteProduct(product)}
+                            tooltip="הסר מהסל"
+                            tooltipOptions={{ position: 'top' }}
+                        />
+                    </div>
+                </div>
+            </div>
+        );
+    };
 
-            case 'LOWSTOCK':
-                return 'warning';
-
-            case 'OUTOFSTOCK':
-                return 'danger';
-
-            default:
-                return null;
+    const handleDecreaseQuantity = async (product) => {
+        if (product.quantity <= 1) {
+            confirmDeleteProduct(product);
+        } else {
+            // הפחתת כמות - מחיקה אחת
+            try {
+                await register(product._id).unwrap();
+                // עדכון מקומי של הכמות
+                const updatedProducts = products.map(p => 
+                    p._id === product._id ? { ...p, quantity: p.quantity - 1 } : p
+                );
+                setProducts(updatedProducts);
+                toast.current.show({ 
+                    severity: 'success', 
+                    summary: 'עודכן', 
+                    detail: 'הכמות עודכנה', 
+                    life: 2000 
+                });
+            } catch (error) {
+                toast.current.show({ 
+                    severity: 'error', 
+                    summary: 'שגיאה', 
+                    detail: error?.data?.message || 'לא הצלחנו לעדכן את הכמות', 
+                    life: 3000 
+                });
+            }
+        }
+    };
+    
+    const handleIncreaseQuantity = async (productId) => {
+        try {
+            await plus(productId).unwrap();
+            // עדכון מקומי של הכמות
+            const updatedProducts = products.map(p => 
+                p._id === productId ? { ...p, quantity: p.quantity + 1 } : p
+            );
+            setProducts(updatedProducts);
+            toast.current.show({ 
+                severity: 'success', 
+                summary: 'עודכן', 
+                detail: 'הכמות עודכנה', 
+                life: 2000 
+            });
+        } catch (error) {
+            if (error?.data?.outOfStock) {
+                toast.current.show({ 
+                    severity: 'error', 
+                    summary: 'אזל מהמלאי', 
+                    detail: `${error.data.productName || 'המוצר'} אזל מהמלאי`, 
+                    life: 4000 
+                });
+            } else {
+                toast.current.show({ 
+                    severity: 'error', 
+                    summary: 'שגיאה', 
+                    detail: error?.data?.message || 'לא הצלחנו לעדכן את הכמות', 
+                    life: 3000 
+                });
+            }
         }
     };
 
-    const header = (
-        <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-            <h4 className="m-0">Manage Products</h4>
-            <IconField iconPosition="left">
-                <InputIcon className="pi pi-search" />
-                <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Search..." />
-            </IconField>
-        </div>
-    );
-    
     const deleteProductDialogFooter = (
         <React.Fragment>
-            <Button label="No" icon="pi pi-times" outlined onClick={hideDeleteProductDialog} />
-            <Button label="Yes" icon="pi pi-check" severity="danger" onClick={deleteProduct} />
+            <Button label="ביטול" icon="pi pi-times" outlined onClick={hideDeleteProductDialog} />
+            <Button label="אישור" icon="pi pi-check" severity="danger" onClick={deleteProduct} />
         </React.Fragment>
     );
     const deleteProductsDialogFooter = (
         <React.Fragment>
-            <Button label="No" icon="pi pi-times" outlined onClick={hideDeleteProductsDialog} />
-            <Button label="Yes" icon="pi pi-check" severity="danger" onClick={deleteSelectedProducts} />
+            <Button label="ביטול" icon="pi pi-times" outlined onClick={hideDeleteProductsDialog} />
+            <Button label="אישור" icon="pi pi-check" severity="danger" onClick={deleteSelectedProducts} />
         </React.Fragment>
     );
 
     return (
-        <div>
+        <div className="basket-page-container">
             <Toast ref={toast} />
             
-            {/* Empty basket state */}
-            {products.length === 0 ? (
-                <div style={{ 
-                    display: 'flex', 
-                    flexDirection: 'column', 
-                    alignItems: 'center', 
-                    justifyContent: 'center', 
-                    minHeight: '60vh',
-                    textAlign: 'center',
-                    padding: '2rem'
-                }}>
-                    <i className="pi pi-shopping-cart" style={{ 
-                        fontSize: '8rem', 
-                        color: '#dee2e6',
-                        marginBottom: '1.5rem'
-                    }}></i>
-                    <h2 style={{ color: '#6c757d', marginBottom: '1rem' }}>
-                        הסל שלך ריק
-                    </h2>
-                    <p style={{ color: '#adb5bd', marginBottom: '2rem', fontSize: '1.1rem' }}>
-                        נראה שעדיין לא הוספת מוצרים לסל הקניות
-                    </p>
-                    <Button 
-                        label="חזרה לחנות כדי להתחיל לקנות" 
-                        icon="pi pi-arrow-left" 
-                        severity="success" 
-                        size="large"
-                        onClick={() => navigate('/allProduct')}
-                        style={{ fontSize: '1.1rem', padding: '0.75rem 2rem' }}
-                    />
-                </div>
-            ) : (
-                <div className="card">
-                    <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+            {/* Hero Section */}
+            <div className="basket-hero">
+                <h1 className="basket-hero-title">סל הקניות שלי</h1>
+                <p className="basket-hero-subtitle">סקור את המוצרים שבחרת והשלם את ההזמנה</p>
+            </div>
+            
+            <div className="basket-container">
+                {/* Empty basket state */}
+                {products.length === 0 ? (
+                    <div className="basket-empty-container">
+                        <i className="pi pi-shopping-cart basket-empty-icon"></i>
+                        <h2 className="basket-empty-title">הסל שלך ריק</h2>
+                        <p className="basket-empty-text">
+                            נראה שעדיין לא הוספת מוצרים לסל הקניות.<br />
+                            התחל לקנות עכשיו וגלה את המבחר המלא שלנו!
+                        </p>
+                        <Button 
+                            label="חזרה לחנות" 
+                            icon="pi pi-arrow-left" 
+                            className="basket-empty-button"
+                            onClick={() => navigate('/allProduct')}
+                        />
+                    </div>
+                ) : (
+                    <>
+                        {/* Toolbar */}
+                        <div className="basket-toolbar-container">
+                            <div className="basket-toolbar-left">
+                                <Button 
+                                    label="המשך לקנות" 
+                                    icon="pi pi-shopping-bag" 
+                                    className="p-button-text"
+                                    onClick={() => navigate('/allProduct')}
+                                />
+                                <Button 
+                                    label="רוקן סל" 
+                                    icon="pi pi-trash" 
+                                    severity="danger" 
+                                    className="p-button-text"
+                                    onClick={confirmDeleteSelected}
+                                />
+                            </div>
+                        </div>
 
-                    <DataTable ref={dt} value={products} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)}
-                        dataKey="id" paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
-                        paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter} header={header}>
-                        {/* סימון v */}
-                        <Column selectionMode="multiple" exportable={false}></Column>
-                        <Column field="name" header="Name" sortable style={{ minWidth: '16rem' }}></Column>
-                        <Column field="image" header="Image" body={imageBodyTemplate}></Column>
-                        <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
-                        <Column field="quntity" header="quntity" body={quntityTemplate} sortable style={{ minWidth: '8rem' }}></Column>
-                        <Column field="body" header="body" sortable style={{ minWidth: '10rem' }}></Column>
-                        <Column field="rating" header="Reviews" body={ratingBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
-                        <Column field="inventoryStatus" header="Status" body={statusBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
-                        <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
-                    </DataTable>
-                </div>
-            )}
+                        {/* Main Content Area with Products and Order Summary */}
+                        <div className="basket-main-content">
+                            {/* Products List */}
+                            <div className="basket-products-section">
+                                <DataView 
+                                    value={products} 
+                                    itemTemplate={itemTemplate}
+                                    className="basket-dataview"
+                                />
+                            </div>
 
-            <Dialog visible={deleteProductDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
+                            {/* Order Summary Side Panel */}
+                            <div className="basket-order-summary">
+                                <div className="order-summary-card">
+                                    <h3 className="order-summary-title">סיכום הזמנה</h3>
+                                    
+                                    <div className="order-summary-content">
+                                        <div className="order-summary-row">
+                                            <span className="order-summary-label">סכום ביניים:</span>
+                                            <span className="order-summary-value">{formatCurrency(products.reduce((sum, product) => sum + (product.price * product.quantity), 0))}</span>
+                                        </div>
+                                        
+                                        <div className="order-summary-row">
+                                            <span className="order-summary-label">עלות משלוח:</span>
+                                            <span className="order-summary-value order-summary-shipping">חינם</span>
+                                        </div>
+                                        
+                                        <div className="order-summary-divider"></div>
+                                        
+                                        <div className="order-summary-row order-summary-total-row">
+                                            <span className="order-summary-total-label">סה״כ לתשלום:</span>
+                                            <span className="order-summary-total-value">{formatCurrency(products.reduce((sum, product) => sum + (product.price * product.quantity), 0))}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <Button 
+                                        label="המשך לתשלום" 
+                                        icon="pi pi-credit-card" 
+                                        className="order-summary-checkout-button"
+                                        onClick={() => toast.current.show({
+                                            severity: 'info',
+                                            summary: 'בקרוב',
+                                            detail: 'עמוד התשלום יהיה זמין בקרוב',
+                                            life: 3000
+                                        })}
+                                    />
+                                    
+                                    <div className="order-summary-info">
+                                        <i className="pi pi-shield"></i>
+                                        <span>תשלום מאובטח ב-SSL</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )}
+            </div>
+
+            <Dialog 
+                visible={deleteProductDialog} 
+                className="basket-dialog"
+                style={{ width: '32rem' }} 
+                breakpoints={{ '960px': '75vw', '641px': '90vw' }} 
+                header="אישור מחיקה" 
+                modal 
+                footer={deleteProductDialogFooter} 
+                onHide={hideDeleteProductDialog}
+            >
                 <div className="confirmation-content">
-                    <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
+                    <i className="pi pi-exclamation-triangle basket-confirmation-icon" />
                     {product && (
                         <span>
-                            Are you sure you want to delete <b>{product.name}</b>?
+                            האם אתה בטוח שברצונך למחוק את <b>{product.name}</b> מהסל?
                         </span>
                     )}
                 </div>
             </Dialog>
 
-            <Dialog visible={deleteProductsDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteProductsDialog}>
+            <Dialog 
+                visible={deleteProductsDialog} 
+                className="basket-dialog"
+                style={{ width: '32rem' }} 
+                breakpoints={{ '960px': '75vw', '641px': '90vw' }} 
+                header="אישור ריקון סל" 
+                modal 
+                footer={deleteProductsDialogFooter} 
+                onHide={hideDeleteProductsDialog}
+            >
                 <div className="confirmation-content">
-                    <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                    {product && <span>Are you sure you want to delete your entire shopping cart?</span>}
+                    <i className="pi pi-exclamation-triangle basket-confirmation-icon" />
+                    {product && <span>האם אתה בטוח שברצונך לרוקן את כל סל הקניות?</span>}
                 </div>
             </Dialog>
         </div>
     );
-}        
+}

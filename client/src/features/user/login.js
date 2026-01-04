@@ -1,18 +1,19 @@
 import { useEffect, useState, useRef } from "react";
 import { useLoginMutation } from "./userSlice";
-import {useNavigate} from "react-router-dom"
+import {useNavigate, Link} from "react-router-dom"
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
 import { setToken } from "./authSlice";
 import { useUpdeteProductMutation } from "../basket/basketSlise";
+import './Auth.css';
 /* eslint-disable react-hooks/exhaustive-deps, no-unused-vars */
 import {useSelector,useDispatch} from "react-redux"
 const Login = () => {
     const toast = useRef(null);
     const dispatch=useDispatch() 
-    const [login, { isError, isSuccess, error, data }] = useLoginMutation()
+    const [login, { isError, isSuccess, error, data, isLoading }] = useLoginMutation()
     const [updateProduct] = useUpdeteProductMutation()
     const navigate=useNavigate();
 
@@ -131,29 +132,64 @@ const submit= (e)=>{
 }
 
     return (
-        <>
-               <Toast ref={toast} />
-               <h2>התחברות</h2>
-               <form onSubmit={(e) => submit(e)}>
-       
-        <div className="card flex justify-content-center">
-            <FloatLabel>
-                <InputText id="userName" value={formDate.userName}  onChange={(e) => change(e)} type="text"  name="userName" required />
-                <label htmlFor="userName">userName</label>
-            </FloatLabel>
+        <div className="auth-container">
+            <Toast ref={toast} />
+            <div className="auth-card">
+                <div className="auth-header">
+                    <i className="pi pi-sign-in auth-icon"></i>
+                    <h1 className="auth-title">התחברות</h1>
+                    <p className="auth-subtitle">ברוכים השבים! נשמח לראות אותך שוב</p>
+                </div>
+                
+                <form onSubmit={(e) => submit(e)} className="auth-form">
+                    <div className="auth-input-group">
+                        <div className="auth-input-wrapper">
+                            <FloatLabel>
+                                <InputText 
+                                    id="userName" 
+                                    value={formDate.userName}  
+                                    onChange={(e) => change(e)} 
+                                    type="text"  
+                                    name="userName" 
+                                    required 
+                                />
+                                <label htmlFor="userName">שם משתמש</label>
+                            </FloatLabel>
+                        </div>
+                    </div>
+                    
+                    <div className="auth-input-group">
+                        <div className="auth-input-wrapper">
+                            <FloatLabel>
+                                <InputText 
+                                    id="password" 
+                                    onChange={(e) => change(e)} 
+                                    type="password" 
+                                    name="password" 
+                                    required 
+                                />
+                                <label htmlFor="password">סיסמה</label>
+                            </FloatLabel>
+                        </div>
+                    </div>
+                    
+                    <Button 
+                        label={isLoading ? "מתחבר..." : "התחבר"} 
+                        type="submit"
+                        loading={isLoading}
+                        icon={isLoading ? "pi pi-spin pi-spinner" : "pi pi-sign-in"}
+                        disabled={isLoading}
+                        className="auth-submit-button"
+                    />
+                </form>
+                
+                <div className="auth-footer">
+                    <p className="auth-footer-text">
+                        עדיין לא רשום? <Link to="/register" className="auth-footer-link">הרשם עכשיו</Link>
+                    </p>
+                </div>
+            </div>
         </div>
-        <div className="card flex justify-content-center">
-            <FloatLabel>
-                <InputText id="password" onChange={(e) => change(e)}type="text" name="password" required />
-                <label htmlFor="password">password</label>
-            </FloatLabel>
-        </div>
-        <div className="card flex justify-content-center">
-            <Button label="Submit" type="submit"/>
-        </div>
-       </form>
-          
-        </>
     )
 }
 export default Login

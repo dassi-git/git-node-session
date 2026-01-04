@@ -3,6 +3,7 @@
 /* eslint-disable no-unused-vars */
 import { useGetAllProductQuery } from "./productSlice"
 import React, { useState, useEffect, useRef } from 'react';
+import './allProduct.css';
 // import { ProductService } from './service/ProductService';
 import { Button } from 'primereact/button';
 import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
@@ -93,7 +94,7 @@ const AllProduct = () => {
             <>
 
                 <div className="col-12" key={product.id}>
-                    <div className={classNames('flex flex-column xl:flex-row xl:align-items-start p-4 gap-4', { 'border-top-1 surface-border': index !== 0 })}>
+                    <div className={classNames('product-list-item flex flex-column xl:flex-row xl:align-items-start p-4 gap-4 border-round-lg', { 'border-top-1 surface-border': index !== 0 })}>
                         <img className="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" src={`http://localhost:8888/${product.image} `} alt={product.name} />
 
                         <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
@@ -138,7 +139,7 @@ const AllProduct = () => {
     const gridItem = (product) => {
         return (
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2" key={product._id}  >
-                <div className="p-4 border-1 surface-border surface-card border-round">
+                <div className="product-card p-4 border-1 surface-border surface-card border-round-xl">
                     <div className="flex flex-wrap align-items-center justify-content-between gap-2">
                         <div className="flex align-items-center gap-2">
                             <i className="pi pi-tag"></i>
@@ -191,8 +192,22 @@ const AllProduct = () => {
 
     const header = () => {
         return (
-            <div className="flex justify-content-end">
-                <DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)} />
+            <div className="products-header">
+                <div className="products-count">
+                    <i className="pi pi-shopping-bag" style={{ marginLeft: '0.5rem' }}></i>
+                    {products.length} מוצרים זמינים
+                </div>
+                <div className="products-header-actions">
+                    {isUserLoggedIn && (
+                        <Button 
+                            label="לסל הקניות" 
+                            icon="pi pi-shopping-cart"
+                            className="basket-button"
+                            onClick={() => navigate('./basket')}
+                        />
+                    )}
+                    <DataViewLayoutOptions layout={layout} onChange={(e) => setLayout(e.value)} />
+                </div>
             </div>
         );
     };
@@ -200,18 +215,35 @@ const AllProduct = () => {
     const skeletonGridItem = () => {
         return (
             <div className="col-12 sm:col-6 lg:col-12 xl:col-4 p-2">
-                <div className="p-4 border-1 surface-border surface-card border-round">
-                    <div className="flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
-                        <Skeleton width="8rem" height="1.5rem"></Skeleton>
-                        <Skeleton width="5rem" height="1.5rem" borderRadius="16px"></Skeleton>
+                <div className="product-card p-4 border-1 surface-border surface-card border-round-xl">
+                    {/* Tag area - small rounded skeleton */}
+                    <div className="flex flex-wrap align-items-center justify-content-between gap-2">
+                        <div className="flex align-items-center gap-2">
+                            <Skeleton width="1rem" height="1rem" borderRadius="4px"></Skeleton>
+                            <Skeleton width="5rem" height="1.2rem" borderRadius="4px"></Skeleton>
+                        </div>
+                        <Skeleton width="4.5rem" height="1.5rem" borderRadius="16px"></Skeleton>
                     </div>
+                    
+                    {/* Image and content area */}
                     <div className="flex flex-column align-items-center gap-3 py-5">
-                        <Skeleton width="100%" height="200px" borderRadius="8px"></Skeleton>
-                        <Skeleton width="80%" height="2rem"></Skeleton>
-                        <Skeleton width="6rem" height="1.5rem"></Skeleton>
+                        {/* Product image - large square */}
+                        <Skeleton className="w-9" height="200px" borderRadius="8px"></Skeleton>
+                        
+                        {/* Product name - thick line */}
+                        <Skeleton width="75%" height="1.75rem" borderRadius="4px"></Skeleton>
+                        
+                        {/* Rating - small circles */}
+                        <div className="flex gap-1">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                                <Skeleton key={i} width="1rem" height="1rem" borderRadius="2px"></Skeleton>
+                            ))}
+                        </div>
                     </div>
+                    
+                    {/* Price and button area */}
                     <div className="flex align-items-center justify-content-between">
-                        <Skeleton width="5rem" height="2rem"></Skeleton>
+                        <Skeleton width="4.5rem" height="1.75rem" borderRadius="4px"></Skeleton>
                         <Skeleton shape="circle" size="3rem"></Skeleton>
                     </div>
                 </div>
@@ -222,19 +254,35 @@ const AllProduct = () => {
     const skeletonListItem = () => {
         return (
             <div className="col-12">
-                <div className="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4">
-                    <Skeleton width="10rem" height="10rem" borderRadius="8px"></Skeleton>
+                <div className="product-list-item flex flex-column xl:flex-row xl:align-items-start p-4 gap-4 border-round-lg">
+                    {/* Product image */}
+                    <Skeleton className="w-9 sm:w-16rem xl:w-10rem" height="10rem" borderRadius="8px"></Skeleton>
+                    
                     <div className="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4" style={{width: '100%'}}>
                         <div className="flex flex-column align-items-center sm:align-items-start gap-3" style={{flex: 1}}>
-                            <Skeleton width="80%" height="2rem"></Skeleton>
-                            <Skeleton width="6rem" height="1.5rem"></Skeleton>
-                            <div className="flex gap-3">
-                                <Skeleton width="8rem" height="1.5rem"></Skeleton>
-                                <Skeleton width="5rem" height="1.5rem" borderRadius="16px"></Skeleton>
+                            {/* Product name */}
+                            <Skeleton width="70%" height="1.75rem" borderRadius="4px"></Skeleton>
+                            
+                            {/* Rating */}
+                            <div className="flex gap-1">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                    <Skeleton key={i} width="1rem" height="1rem" borderRadius="2px"></Skeleton>
+                                ))}
+                            </div>
+                            
+                            {/* Category and tag */}
+                            <div className="flex align-items-center gap-3">
+                                <div className="flex align-items-center gap-2">
+                                    <Skeleton width="1rem" height="1rem" borderRadius="4px"></Skeleton>
+                                    <Skeleton width="6rem" height="1.2rem" borderRadius="4px"></Skeleton>
+                                </div>
+                                <Skeleton width="4.5rem" height="1.5rem" borderRadius="16px"></Skeleton>
                             </div>
                         </div>
+                        
+                        {/* Price and button */}
                         <div className="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-                            <Skeleton width="5rem" height="2rem"></Skeleton>
+                            <Skeleton width="5rem" height="1.75rem" borderRadius="4px"></Skeleton>
                             <Skeleton shape="circle" size="3rem"></Skeleton>
                         </div>
                     </div>
@@ -245,12 +293,13 @@ const AllProduct = () => {
 
     if (isLoading) {
         return (
-            <div className="card">
+            <div className="products-page-container">
                 <Toast ref={toast} />
-                {isUserLoggedIn && (
-                    <Button onClick={() => navigate('./basket')}>מעבר לסל</Button>
-                )}
-                <div style={{ marginTop: '1rem' }}>
+                <div className="products-hero">
+                    <h1 className="products-hero-title">המוצרים שלנו</h1>
+                    <p className="products-hero-subtitle">גלה את המבחר המלא שלנו</p>
+                </div>
+                <div className="products-container">
                     {header()}
                     <div className="grid grid-nogutter">
                         {layout === 'grid' 
@@ -263,13 +312,35 @@ const AllProduct = () => {
         );
     }
 
+    if (products.length === 0) {
+        return (
+            <div className="products-page-container">
+                <Toast ref={toast} />
+                <div className="products-hero">
+                    <h1 className="products-hero-title">המוצרים שלנו</h1>
+                    <p className="products-hero-subtitle">גלה את המבחר המלא שלנו</p>
+                </div>
+                <div className="products-container">
+                    <div className="products-empty-state">
+                        <i className="pi pi-inbox products-empty-icon"></i>
+                        <h2 className="products-empty-title">אין מוצרים זמינים כרגע</h2>
+                        <p className="products-empty-text">נסה שוב מאוחר יותר או צור קשר עם התמיכה</p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div className="card">
+        <div className="products-page-container">
             <Toast ref={toast} />
-            {isUserLoggedIn && (
-                <Button onClick={() => navigate('./basket')}>מעבר לסל</Button>
-            )}
-            <DataView value={products} listTemplate={listTemplate} layout={layout} header={header()} />
+            <div className="products-hero">
+                <h1 className="products-hero-title">המוצרים שלנו</h1>
+                <p className="products-hero-subtitle">מבחר ענק של מוצרים איכותיים במחירים הכי משתלמים</p>
+            </div>
+            <div className="products-container">
+                <DataView value={products} listTemplate={listTemplate} layout={layout} header={header()} />
+            </div>
         </div>
     )
 }

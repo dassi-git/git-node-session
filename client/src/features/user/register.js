@@ -1,10 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import { useRegisterMutation } from "./userSlice";
-import {useNavigate} from "react-router-dom"
+import {useNavigate, Link} from "react-router-dom"
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Button } from 'primereact/button';
 import { Toast } from 'primereact/toast';
+import './Auth.css';
         
     
 
@@ -207,123 +208,153 @@ const submit= (e)=>{
     register(dataToSend);
 }
 
-
     return (
-        <>
-               <Toast ref={toast} />
-               <h2>הרשמה</h2>
-               <form onSubmit={(e) => submit(e)}>
-        <div className="card flex justify-content-center">
-            <FloatLabel>
-                <InputText 
-                    id="name" 
-                    value={formDate.name}
-                    onChange={(e) => change(e)} 
-                    type="text" 
-                    name="name" 
-                    className={errors.name ? 'p-invalid' : ''}
-                />
-                <label htmlFor="name">שם מלא</label>
-            </FloatLabel>
+        <div className="auth-container">
+            <Toast ref={toast} />
+            <div className="auth-card">
+                <div className="auth-header">
+                    <i className="pi pi-user-plus auth-icon"></i>
+                    <h1 className="auth-title">הרשמה</h1>
+                    <p className="auth-subtitle">הצטרף אלינו והתחל לקנות היום</p>
+                </div>
+                
+                <form onSubmit={(e) => submit(e)} className="auth-form">
+                    <div className="auth-input-group">
+                        <div className="auth-input-wrapper">
+                            <FloatLabel>
+                                <InputText 
+                                    id="name" 
+                                    value={formDate.name}
+                                    onChange={(e) => change(e)} 
+                                    type="text" 
+                                    name="name" 
+                                    className={errors.name ? 'p-invalid' : ''}
+                                />
+                                <label htmlFor="name">שם מלא</label>
+                            </FloatLabel>
+                        </div>
+                        {errors.name && <small className="auth-error-message">{errors.name}</small>}
+                    </div>
+                    
+                    <div className="auth-input-group">
+                        <div className="auth-input-wrapper">
+                            <FloatLabel>
+                                <InputText 
+                                    id="userName" 
+                                    value={formDate.userName}
+                                    onChange={(e) => change(e)}
+                                    type="text"  
+                                    name="userName"
+                                    className={errors.userName ? 'p-invalid' : ''}
+                                />
+                                <label htmlFor="userName">שם משתמש</label>
+                            </FloatLabel>
+                        </div>
+                        {errors.userName && <small className="auth-error-message">{errors.userName}</small>}
+                    </div>
+                    
+                    <div className="auth-input-group">
+                        <div className="auth-input-wrapper">
+                            <FloatLabel>
+                                <InputText 
+                                    id="email"
+                                    value={formDate.email}
+                                    onChange={(e) => change(e)}
+                                    type="text" 
+                                    name="email"
+                                    className={errors.email ? 'p-invalid' : ''}
+                                />
+                                <label htmlFor="email">אימייל</label>
+                            </FloatLabel>
+                        </div>
+                        {errors.email && <small className="auth-error-message">{errors.email}</small>}
+                    </div>
+                    
+                    <div className="auth-input-group">
+                        <div className="auth-input-wrapper">
+                            <FloatLabel>
+                                <InputText 
+                                    id="password" 
+                                    value={formDate.password}
+                                    onChange={(e) => change(e)}
+                                    type="password" 
+                                    name="password"
+                                    className={errors.password ? 'p-invalid' : ''}
+                                />
+                                <label htmlFor="password">סיסמה</label>
+                            </FloatLabel>
+                        </div>
+                        {errors.password && <small className="auth-error-message">{errors.password}</small>}
+                    </div>
+                    
+                    <div className="auth-input-group">
+                        <div className="auth-input-wrapper">
+                            <FloatLabel>
+                                <InputText 
+                                    id="confirmPassword" 
+                                    value={formDate.confirmPassword}
+                                    onChange={(e) => change(e)}
+                                    type="password" 
+                                    name="confirmPassword"
+                                    className={errors.confirmPassword ? 'p-invalid' : ''}
+                                />
+                                <label htmlFor="confirmPassword">אימות סיסמה</label>
+                            </FloatLabel>
+                        </div>
+                        {errors.confirmPassword && <small className="auth-error-message">{errors.confirmPassword}</small>}
+                    </div>
+                    
+                    <div className="auth-input-group">
+                        <div className="auth-input-wrapper">
+                            <FloatLabel>
+                                <InputText 
+                                    id="adress" 
+                                    value={formDate.adress}
+                                    onChange={(e) => change(e)}
+                                    type="text" 
+                                    name="adress"
+                                    className={errors.adress ? 'p-invalid' : ''}
+                                />
+                                <label htmlFor="adress">כתובת</label>
+                            </FloatLabel>
+                        </div>
+                        {errors.adress && <small className="auth-error-message">{errors.adress}</small>}
+                    </div>
+                    
+                    <div className="auth-input-group">
+                        <div className="auth-input-wrapper">
+                            <FloatLabel>
+                                <InputText 
+                                    id="phone" 
+                                    value={formDate.phone}
+                                    onChange={(e) => change(e)}
+                                    type="text" 
+                                    name="phone"
+                                    className={errors.phone ? 'p-invalid' : ''}
+                                />
+                                <label htmlFor="phone">טלפון</label>
+                            </FloatLabel>
+                        </div>
+                        {errors.phone && <small className="auth-error-message">{errors.phone}</small>}
+                    </div>
+                    
+                    <Button 
+                        label={isLoading ? "נרשם..." : "הרשמה"} 
+                        type="submit" 
+                        disabled={isLoading}
+                        loading={isLoading}
+                        icon={isLoading ? "pi pi-spin pi-spinner" : "pi pi-user-plus"}
+                        className="auth-submit-button"
+                    />
+                </form>
+                
+                <div className="auth-footer">
+                    <p className="auth-footer-text">
+                        כבר יש לך חשבון? <Link to="/login" className="auth-footer-link">התחבר</Link>
+                    </p>
+                </div>
+            </div>
         </div>
-        {errors.name && <small style={{color: 'red', display: 'block', textAlign: 'center', marginTop: '5px'}}>{errors.name}</small>}
-        
-        <div className="card flex justify-content-center">
-            <FloatLabel>
-                <InputText 
-                    id="userName" 
-                    value={formDate.userName}
-                    onChange={(e) => change(e)}
-                    type="text"  
-                    name="userName"
-                    className={errors.userName ? 'p-invalid' : ''}
-                />
-                <label htmlFor="userName">שם משתמש</label>
-            </FloatLabel>
-        </div>
-        {errors.userName && <small style={{color: 'red', display: 'block', textAlign: 'center', marginTop: '5px'}}>{errors.userName}</small>}
-        
-        <div className="card flex justify-content-center">
-            <FloatLabel>
-                <InputText 
-                    id="email"
-                    value={formDate.email}
-                    onChange={(e) => change(e)}
-                    type="text" 
-                    name="email"
-                    className={errors.email ? 'p-invalid' : ''}
-                />
-                <label htmlFor="email">אימייל</label>
-            </FloatLabel>
-        </div>
-        {errors.email && <small style={{color: 'red', display: 'block', textAlign: 'center', marginTop: '5px'}}>{errors.email}</small>}
-        
-        <div className="card flex justify-content-center">
-            <FloatLabel>
-                <InputText 
-                    id="password" 
-                    value={formDate.password}
-                    onChange={(e) => change(e)}
-                    type="password" 
-                    name="password"
-                    className={errors.password ? 'p-invalid' : ''}
-                />
-                <label htmlFor="password">סיסמה</label>
-            </FloatLabel>
-        </div>
-        {errors.password && <small style={{color: 'red', display: 'block', textAlign: 'center', marginTop: '5px'}}>{errors.password}</small>}
-        
-        <div className="card flex justify-content-center">
-            <FloatLabel>
-                <InputText 
-                    id="confirmPassword" 
-                    value={formDate.confirmPassword}
-                    onChange={(e) => change(e)}
-                    type="password" 
-                    name="confirmPassword"
-                    className={errors.confirmPassword ? 'p-invalid' : ''}
-                />
-                <label htmlFor="confirmPassword">אימות סיסמה</label>
-            </FloatLabel>
-        </div>
-        {errors.confirmPassword && <small style={{color: 'red', display: 'block', textAlign: 'center', marginTop: '5px'}}>{errors.confirmPassword}</small>}
-        
-        <div className="card flex justify-content-center">
-            <FloatLabel>
-                <InputText 
-                    id="adress" 
-                    value={formDate.adress}
-                    onChange={(e) => change(e)}
-                    type="text" 
-                    name="adress"
-                    className={errors.adress ? 'p-invalid' : ''}
-                />
-                <label htmlFor="adress">כתובת</label>
-            </FloatLabel>
-        </div>
-        {errors.adress && <small style={{color: 'red', display: 'block', textAlign: 'center', marginTop: '5px'}}>{errors.adress}</small>}
-        
-        <div className="card flex justify-content-center">
-            <FloatLabel>
-                <InputText 
-                    id="phone" 
-                    value={formDate.phone}
-                    onChange={(e) => change(e)}
-                    type="text" 
-                    name="phone"
-                    className={errors.phone ? 'p-invalid' : ''}
-                />
-                <label htmlFor="phone">טלפון</label>
-            </FloatLabel>
-        </div>
-        {errors.phone && <small style={{color: 'red', display: 'block', textAlign: 'center', marginTop: '5px'}}>{errors.phone}</small>}
-        
-        <div className="card flex justify-content-center">
-            <Button label="הרשמה" type="submit" disabled={isLoading}/>
-        </div>
-       </form>
-          
-        </>
     )
 }
 export default Register
