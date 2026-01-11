@@ -21,7 +21,7 @@ const Register = () => {
         userName: "",
         password: "",
         confirmPassword: "",
-        adress: "",
+        address: "",
         phone: "",
         email: ""
     })
@@ -32,7 +32,7 @@ const Register = () => {
         userName: "",
         password: "",
         confirmPassword: "",
-        adress: "",
+        address: "",
         phone: "",
         email: ""
     })
@@ -132,7 +132,7 @@ const validateField = (name, value) => {
                 errorMessage = "הסיסמאות אינן תואמות";
             }
             break;
-        case "adress":
+        case "address":
             if (!value.trim()) {
                 errorMessage = "כתובת היא שדה חובה";
             }
@@ -184,7 +184,7 @@ const submit= (e)=>{
         email: validateField("email", formDate.email),
         password: validateField("password", formDate.password),
         confirmPassword: validateField("confirmPassword", formDate.confirmPassword),
-        adress: validateField("adress", formDate.adress),
+        address: validateField("address", formDate.address),
         phone: validateField("phone", formDate.phone)
     };
     
@@ -308,17 +308,17 @@ const submit= (e)=>{
                         <div className="auth-input-wrapper">
                             <FloatLabel>
                                 <InputText 
-                                    id="adress" 
-                                    value={formDate.adress}
+                                    id="address" 
+                                    value={formDate.address}
                                     onChange={(e) => change(e)}
                                     type="text" 
-                                    name="adress"
-                                    className={errors.adress ? 'p-invalid' : ''}
+                                    name="address"
+                                    className={errors.address ? 'p-invalid' : ''}
                                 />
-                                <label htmlFor="adress">כתובת</label>
+                                <label htmlFor="address">כתובת</label>
                             </FloatLabel>
                         </div>
-                        {errors.adress && <small className="auth-error-message">{errors.adress}</small>}
+                        {errors.address && <small className="auth-error-message">{errors.address}</small>}
                     </div>
                     
                     <div className="auth-input-group">

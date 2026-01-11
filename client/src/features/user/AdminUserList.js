@@ -44,7 +44,7 @@ const AdminUserList = () => {
                 user.userName?.toLowerCase().includes(searchLower) ||
                 user.email?.toLowerCase().includes(searchLower) ||
                 user.phone?.toLowerCase().includes(searchLower) ||
-                user.adress?.toLowerCase().includes(searchLower) ||
+                user.address?.toLowerCase().includes(searchLower) ||
                 user.role?.toLowerCase().includes(searchLower)
             );
         });
@@ -408,11 +408,11 @@ const AdminUserList = () => {
                                 />
                             </div>
                             <div className="form-field">
-                                <label htmlFor="adress">כתובת</label>
+                                <label htmlFor="address">כתובת</label>
                                 <InputText
-                                    id="adress"
-                                    value={editedUser.adress || ''}
-                                    onChange={(e) => setEditedUser({...editedUser, adress: e.target.value})}
+                                    id="address"
+                                    value={editedUser.address || ''}
+                                    onChange={(e) => setEditedUser({...editedUser, address: e.target.value})}
                                     className="w-full"
                                 />
                             </div>

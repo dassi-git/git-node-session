@@ -24,7 +24,7 @@ const UserProfile = () => {
         userName: '',
         email: '',
         phone: '',
-        adress: '',
+        address: '',
         newPassword: '',
         confirmPassword: ''
     });
@@ -37,7 +37,7 @@ const UserProfile = () => {
                 userName: userData.userName || '',
                 email: userData.email || '',
                 phone: userData.phone || '',
-                adress: userData.adress || '',
+                address: userData.address || '',
                 newPassword: '',
                 confirmPassword: ''
             });
@@ -68,7 +68,7 @@ const UserProfile = () => {
         e.preventDefault();
 
 
-        if (!formData.name || !formData.userName || !formData.email || !formData.phone || !formData.adress) {
+        if (!formData.name || !formData.userName || !formData.email || !formData.phone || !formData.address) {
             toast.current.show({
                 severity: 'warn',
                 summary: 'שים לב',
@@ -107,7 +107,7 @@ const UserProfile = () => {
                 userName: formData.userName,
                 email: formData.email,
                 phone: formData.phone,
-                adress: formData.adress
+                address: formData.address
             };
 
             // הוספת סיסמה רק אם הוזנה
@@ -247,7 +247,7 @@ const UserProfile = () => {
                         </div>
                         <div className="stat-content">
                             <p className="stat-label">כתובת</p>
-                            <h3 className="stat-value">{userData.adress || 'לא צוינה'}</h3>
+                            <h3 className="stat-value">{userData.address || 'לא צוינה'}</h3>
                         </div>
                     </div>
                 </div>
@@ -322,11 +322,11 @@ const UserProfile = () => {
                             </div>
 
                             <div className="form-field form-field-full">
-                                <label htmlFor="adress">כתובת *</label>
+                                <label htmlFor="address">כתובת *</label>
                                 <InputText
-                                    id="adress"
-                                    name="adress"
-                                    value={formData.adress}
+                                    id="address"
+                                    name="address"
+                                    value={formData.address}
                                     onChange={handleInputChange}
                                     disabled={!isEditing}
                                     className="w-full"

@@ -1,57 +1,204 @@
-🛒 Full-Stack E-Commerce Platform
-A robust, full-stack e-commerce application built with the MERN stack. This project features a secure authentication system, product management for admins, and a dynamic shopping basket for users.
+# 🛒 Full-Stack E-Commerce Platform
 
-🚀 Key Features
-User Authentication: Secure Login and Register functionality using JWT and bcrypt.
+A professional, production-ready e-commerce application built with the MERN stack featuring enterprise-grade security, comprehensive error handling, and advanced middleware protection.
 
-Product Catalog: Browse all products or view detailed information for a specific item.
+## 🌟 Key Features
 
-Admin Dashboard: Exclusive access for administrators to create, update, and delete products from the store.
+### Security & Authentication
+- 🔐 JWT Authentication with 24-hour expiration
+- 🛡️ Rate Limiting on sensitive endpoints
+- 🔒 bcrypt Password Hashing
+- 🚫 Role-based Access Control (Admin/User)
+- 🛡️ Helmet.js security headers
+- ⚡ Try-catch error handling on all async operations
 
-Shopping Basket: Authenticated users can manage their personal cart, including adding items, updating quantities, and clearing the basket.
+### User Management
+- User Registration & Login
+- Profile Management
+- Password Reset via Email
+- Admin Panel
+- Role-based Permissions
 
-Protected Routes: Advanced middleware to ensure only authorized users or admins can access sensitive operations.
+### Product & Shopping
+- Product CRUD Operations
+- Image Upload & Storage
+- Stock Management
+- Dynamic Shopping Basket
+- Real-time Stock Validation
 
-🛠️ Tech Stack
-Frontend
-React (v19)
+### Advanced Features
+- 📝 Winston Logger
+- 🎯 Centralized Constants
+- 📧 Email Notifications
+- 🔄 RESTful API
+- ⚡ Optimized Queries
 
-Redux Toolkit & RTK Query: For efficient state management and server-side data fetching.
+## 🛠️ Tech Stack
 
-React Router Dom: For seamless navigation.
+**Frontend:** React 19, Redux Toolkit, RTK Query, PrimeReact  
+**Backend:** Node.js, Express 5, MongoDB, Mongoose  
+**Security:** JWT, bcrypt, express-rate-limit, helmet  
+**Logging:** Winston  
+**Email:** Nodemailer
 
-PrimeReact & PrimeFlex: For a modern and responsive UI.
+## ⚙️ Installation
 
-Backend
-Node.js & Express: Fast and minimalist web framework.
+### Prerequisites
+- Node.js (v14+)
+- MongoDB
+- Gmail account (for emails)
 
-MongoDB & Mongoose: NoSQL database for flexible data modeling.
+### Setup
 
-JWT (JSON Web Token): For secure user sessions.
+**1. Clone & Install**
+```bash
+git clone https://github.com/dassi-git/git-node-session.git
+cd git-node-session
 
-dotenv: For environment variable management.
-
-📂 Project Structure
-/server: Express backend with MVC architecture (Models, View-Controllers, Routes).
-
-/client: React frontend organized by features (User, Product, Basket).
-
-⚙️ Getting Started
-Prerequisites
-Node.js installed
-
-MongoDB instance (Local or Atlas)
-
-Installation
-Clone the repository
-
-Setup Server:
+# Server
 cd server
 npm install
-# Create a .env file with: PORT, MONGODB_URI, ACCESS_TOKEN_SECRET
-npm start
 
-Setup Client:
-cd client
+# Client
+cd ../client
 npm install
+```
+
+**2. Configure Environment**
+
+`server/.env`:
+```env
+MONGO_URI=mongodb://localhost:27017/ecommerce
+ACCESS_TOKEN_SECRET=your-super-secret-key
+PORT=8888
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASSWORD=your-gmail-app-password
+CLIENT_URL=http://localhost:3000
+NODE_ENV=development
+```
+
+`client/.env`:
+```env
+REACT_APP_API_URL=http://localhost:8888
+REACT_APP_API_BASE_URL=http://localhost:8888/api/
+```
+
+**3. Run Application**
+```bash
+# Terminal 1 - Server
+cd server
+npm run dev
+
+# Terminal 2 - Client
+cd client
 npm start
+```
+
+Access at: `http://localhost:3000`
+
+## 🔒 Security Features
+
+### Rate Limits
+- Login: 5 attempts / 15 min
+- Register: 3 accounts / hour
+- Password Reset: 3 attempts / 15 min
+- API: 100 requests / 15 min
+
+### Authentication
+- JWT tokens (24h expiration)
+- bcrypt password hashing (10 rounds)
+- Secure HTTP-only cookies
+
+## 📚 API Documentation
+
+### Authentication
+```http
+POST /api/user/register    # Create account
+POST /api/user/login        # Get JWT token
+POST /api/user/forgot-password
+POST /api/user/reset-password
+```
+
+### Users (Protected)
+```http
+GET    /api/user/profile    # Current user
+GET    /api/user            # All users (Admin)
+GET    /api/user/:id        # User by ID
+PUT    /api/user/:id        # Update user
+DELETE /api/user/:id        # Delete user (Admin)
+```
+
+### Products
+```http
+GET    /api/product         # All products
+GET    /api/product/:id     # Product by ID
+POST   /api/product         # Create (Admin)
+PUT    /api/product         # Update (Admin)
+DELETE /api/product/:id     # Delete (Admin)
+```
+
+### Basket (Protected)
+```http
+GET    /api/basket          # Get user basket
+POST   /api/basket/:id      # Add to basket
+DELETE /api/basket/:id      # Remove item
+DELETE /api/basket          # Clear basket
+```
+
+## 📁 Project Structure
+
+```
+├── client/                 # React frontend
+│   ├── src/
+│   │   ├── features/      # Redux features
+│   │   └── components/    # React components
+│   └── public/
+└── server/                # Express backend
+    ├── config/            # Configuration
+    │   ├── constants.js   # App constants
+    │   ├── logger.js      # Winston setup
+    │   └── emailService.js
+    ├── controllers/       # Business logic
+    ├── middleware/        # Auth & validation
+    ├── models/            # Mongoose schemas
+    ├── routes/            # API routes
+    └── logs/              # Application logs
+```
+
+## 🚀 Deployment
+
+**Server:**
+1. Set `NODE_ENV=production`
+2. Configure production MongoDB URI
+3. Set secure JWT secret
+4. Update CLIENT_URL
+
+**Client:**
+1. Update API URLs
+2. Build: `npm run build`
+3. Deploy to Netlify/Vercel
+
+## 📝 Logs
+
+Logs stored in `server/logs/`:
+- `error.log` - Errors only
+- `combined.log` - All logs
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch
+3. Commit changes
+4. Open Pull Request
+
+## 📄 License
+
+ISC License
+
+## 👨‍💻 Author
+
+Dassi Git Team
+
+---
+
+**Note:** This is a learning project. Conduct security audits before production use.

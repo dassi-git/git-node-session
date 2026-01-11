@@ -7,9 +7,9 @@ const { sendPasswordResetEmail } = require("../config/emailService")
 
 
 const register = async (req, res) => {
-    const { name, userName, adress, phone, email, password } = req.body
+    const { name, userName, address, phone, email, password } = req.body
     
-    if (!name || !userName || !adress || !phone || !email || !password)
+    if (!name || !userName || !address || !phone || !email || !password)
         return res.status(400).json({ message: 'All fields are required' })
     
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -31,7 +31,7 @@ const register = async (req, res) => {
     
     try {
         const bcryptPassword = await bcrypt.hash(password, 10)
-        const userObj = { name, userName, adress, phone, email, password: bcryptPassword}
+        const userObj = { name, userName, address, phone, email, password: bcryptPassword}
         const user = await User.create(userObj)
         if (user) {
             return res.status(201).json({ message: `New user ${user.userName} created` })
@@ -122,7 +122,7 @@ const deleteUser = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const { id } = req.params
-        const { name, userName, adress, phone, email, password, role } = req.body
+        const { name, userName, address, phone, email, password, role } = req.body
 
         const currentUserId = req.user?._id?.toString()
         const isAdmin = req.user?.role === 'Admin'
@@ -132,7 +132,7 @@ const updateUser = async (req, res) => {
             return res.status(403).json({ message: 'You can only update your own profile' })
         }
 
-        if (!name || !userName || !adress || !phone || !email) {
+        if (!name || !userName || !address || !phone || !email) {
             return res.status(400).json({ message: 'All required fields must be provided' })
         }
         
@@ -143,7 +143,7 @@ const updateUser = async (req, res) => {
         
         user.name = name
         user.userName = userName
-        user.adress = adress
+        user.address = address
         user.phone = phone
         user.email = email
         
