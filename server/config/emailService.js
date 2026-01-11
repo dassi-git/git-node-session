@@ -21,7 +21,7 @@ const sendPasswordResetEmail = async (email, resetToken, userName) => {
     
     const transporter = createTransporter();
     
-    const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+    const resetUrl = `${process.env.CLIENT_URL || 'http://localhost:3000'}/reset-password/${resetToken}`;
     
     const mailOptions = {
         from: process.env.EMAIL_USER || 'your-email@gmail.com',
