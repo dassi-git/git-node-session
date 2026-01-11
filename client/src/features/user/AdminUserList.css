@@ -1,0 +1,434 @@
+/* Admin User List Container */
+.admin-user-list-container {
+    min-height: calc(100vh - 80px);
+    background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);
+    font-family: 'Heebo', sans-serif;
+}
+
+/* Hero Section */
+.admin-user-hero {
+    background: linear-gradient(135deg, #f8f8f8 0%, #fafafa 100%);
+    padding: 4rem 2rem;
+    text-align: center;
+    color: #1a1a1a;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(155, 123, 123, 0.15);
+    box-shadow: 0 4px 20px rgba(155, 123, 123, 0.08);
+}
+
+.admin-user-hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.admin-user-hero-subtitle {
+    font-size: 1.2rem;
+    font-weight: 400;
+    opacity: 0.95;
+}
+
+/* Content */
+.admin-user-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Statistics Cards */
+.admin-user-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.admin-user-stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.admin-user-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.admin-user-stat-card .stat-card-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: white;
+}
+
+.admin-user-stat-card .stat-card-icon-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.admin-user-stat-card .stat-card-icon-success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.admin-user-stat-card .stat-card-icon-warning {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.admin-user-stat-card .stat-card-icon-info {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.admin-user-stat-card .stat-card-content {
+    flex: 1;
+}
+
+.admin-user-stat-card .stat-card-content h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #495057;
+    margin: 0 0 0.25rem 0;
+}
+
+.admin-user-stat-card .stat-card-content p {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin: 0;
+}
+
+.admin-user-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+}
+
+/* Header */
+.admin-user-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #f0f2f5;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.admin-user-stats {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #495057;
+}
+
+.admin-user-stats i {
+    font-size: 2rem;
+    color: #667eea;
+}
+
+.admin-user-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.admin-user-search input {
+    border-radius: 25px !important;
+    padding: 0.75rem 1.5rem !important;
+    padding-right: 3rem !important;
+}
+
+/* Table */
+.admin-user-table {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.admin-user-table .p-datatable-header {
+    background: linear-gradient(to right, #667eea, #764ba2) !important;
+    color: white !important;
+    border: none !important;
+    padding: 1.25rem !important;
+    font-weight: 600 !important;
+}
+
+.admin-user-table .p-datatable-thead > tr > th {
+    background: #f8f9fa !important;
+    font-weight: 700 !important;
+    color: #495057 !important;
+    border-bottom: 2px solid #dee2e6 !important;
+    padding: 1rem !important;
+}
+
+.admin-user-table .p-datatable-tbody > tr {
+    transition: all 0.3s ease;
+}
+
+.admin-user-table .p-datatable-tbody > tr:hover {
+    background: linear-gradient(to right, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05)) !important;
+    transform: scale(1.005);
+}
+
+.admin-user-table .p-datatable-tbody > tr > td {
+    padding: 1rem !important;
+    vertical-align: middle !important;
+}
+
+.admin-user-table .p-datatable-tbody > tr.p-row-odd {
+    background: #fafbfc !important;
+}
+
+/* Role Badge */
+.user-role-badge {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.user-role-badge.admin {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.user-role-badge.user {
+    background: #e9ecef;
+    color: #495057;
+    border: 1px solid #dee2e6;
+}
+
+/* Loading & Error States */
+.admin-user-list-loading,
+.admin-user-list-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    gap: 1rem;
+}
+
+.admin-user-list-loading p {
+    font-size: 1.2rem;
+    color: #6c757d;
+}
+
+.admin-user-list-error h3 {
+    color: #495057;
+    margin-bottom: 1rem;
+}
+
+/* Dialog */
+.admin-user-dialog .p-dialog-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 12px 12px 0 0;
+}
+
+.admin-user-dialog .p-dialog-content {
+    padding: 2rem;
+}
+
+.confirmation-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.confirmation-content span {
+    font-size: 1.1rem;
+    color: #495057;
+}
+
+/* Edit User Form */
+.edit-user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.edit-user-form .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.edit-user-form .form-field label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.95rem;
+}
+
+.edit-user-form .form-field input,
+.edit-user-form .form-field .p-dropdown {
+    border-radius: 8px;
+}
+
+.edit-user-form .form-field .p-dropdown {
+    width: 100%;
+}
+
+.edit-user-form .form-field .p-dropdown:not(.p-disabled):hover {
+    border-color: #667eea;
+}
+
+.edit-user-form .form-field .p-dropdown:not(.p-disabled).p-focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    border-color: #667eea;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .admin-user-hero-title {
+        font-size: 2rem;
+    }
+
+    .admin-user-hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .admin-user-content {
+        padding: 1rem;
+    }
+
+    .admin-user-card {
+        padding: 1rem;
+    }
+
+    .admin-user-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-user-stats {
+        font-size: 1rem;
+    }
+
+    .admin-user-stats i {
+        font-size: 1.5rem;
+    }
+
+    .admin-user-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .admin-user-search {
+        width: 100%;
+    }
+
+    .admin-user-search input {
+        width: 100% !important;
+    }
+
+    .admin-user-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-user-stat-card {
+        padding: 1rem;
+    }
+
+    .stat-card-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    .stat-card-content h3 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Button Enhancements */
+.admin-user-table .p-button-warning {
+    background: transparent !important;
+    border-color: #ffc107 !important;
+    color: #ffc107 !important;
+}
+
+.admin-user-table .p-button-warning:hover {
+    background: #ffc107 !important;
+    color: white !important;
+}
+
+.admin-user-table .p-button-danger {
+    background: transparent !important;
+    border-color: #dc3545 !important;
+    color: #dc3545 !important;
+}
+
+.admin-user-table .p-button-danger:hover {
+    background: #dc3545 !important;
+    color: white !important;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.admin-user-card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.admin-user-hero {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+.admin-user-stat-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.admin-user-stat-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.admin-user-stat-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.admin-user-stat-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.admin-user-stat-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+

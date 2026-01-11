@@ -1,0 +1,89 @@
+const Product = require("../models/Product")
+
+const getAllProducts = async (req, res) => {
+    try {
+        const products = await Product.find().lean()
+        return res.json(products)
+    } catch (error) {
+        console.error('Error fetching products:', error)
+        return res.status(500).json({ message: 'Server error fetching products' })
+    }
+}
+
+const getId = async (req, res) => {
+    try {
+        const { id } = req.params
+        const products = await Product.findOne({ _id: id })
+        if (!products) {
+            return res.status(404).json({ message: 'Product not found' })
+        }
+        return res.json(products)
+    } catch (error) {
+        console.error('Error fetching product by ID:', error)
+        return res.status(500).json({ message: 'Server error fetching product' })
+    }
+}
+
+const deleteProduct = async (req, res) => {
+    try {
+        const { id } = req.params
+        const delate = await Product.findById({ _id: id })
+        if (!delate) {
+            return res.status(404).json({ message: "Product not found" })
+        }
+        const save = await delate.deleteOne()
+        return res.json(save)
+    } catch (error) {
+        console.error('Error deleting product:', error)
+        return res.status(500).json({ message: 'Server error deleting product' })
+    }
+}
+
+const updateProduct = async (req, res) => {
+    try {
+        const { _id, name, price, body, productExit, image } = req.body
+        const updateProduct1 = await Product.findById(_id)
+
+        if (!updateProduct1) {
+            return res.status(404).json({ message: "Product not found" })
+        }
+        
+        updateProduct1.name = name
+        updateProduct1.price = price
+        updateProduct1.body = body
+        updateProduct1.productExit = productExit
+        updateProduct1.image = image
+
+        const result = await updateProduct1.save()
+        return res.json(result)
+    } catch (error) {
+        console.error('Error updating product:', error)
+        return res.status(500).json({ message: 'Server error updating product' })
+    }
+}
+
+const creatProduct = async (req, res) => {
+    try {
+        const { name, price, body, productExit, image } = req.body
+        if (!name || !price) {
+            return res.status(400).json({ message: "Name and price are required" })
+        }
+        const product1 = await Product.create({ name, price, body, productExit, image })
+        return res.json(product1)
+    } catch (error) {
+        console.error('Error creating product:', error)
+        return res.status(500).json({ message: 'Server error creating product' })
+    }
+}
+
+
+
+
+
+module.exports = { deleteProduct, updateProduct, creatProduct, getAllProducts, getId }
+
+
+
+
+
+

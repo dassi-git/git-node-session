@@ -1,0 +1,406 @@
+/* Admin Products Container */
+.admin-products-container {
+    min-height: calc(100vh - 80px);
+    background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);
+    font-family: 'Heebo', sans-serif;
+}
+
+/* Hero Section */
+.admin-products-hero {
+    background: linear-gradient(135deg, #f8f8f8 0%, #fafafa 100%);
+    padding: 4rem 2rem;
+    color: #1a1a1a;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(155, 123, 123, 0.15);
+    box-shadow: 0 4px 20px rgba(155, 123, 123, 0.08);
+}
+
+.admin-products-hero-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.admin-products-hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.admin-products-hero-subtitle {
+    font-size: 1.2rem;
+    font-weight: 400;
+    opacity: 0.95;
+}
+
+.admin-products-add-btn {
+    background: white !important;
+    color: #2E7D32 !important;
+    border: none !important;
+    font-weight: 700 !important;
+    padding: 0.75rem 1.5rem !important;
+    font-size: 1rem !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+    transition: all 0.3s ease !important;
+}
+
+.admin-products-add-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4) !important;
+    background: #f1f8e9 !important;
+}
+
+/* Content */
+.admin-products-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Statistics Cards */
+.admin-products-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.admin-products-stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.admin-products-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.stat-card-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: white;
+}
+
+.stat-card-icon-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.stat-card-icon-success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.stat-card-icon-warning {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.stat-card-icon-info {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.stat-card-content {
+    flex: 1;
+}
+
+.stat-card-content h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #495057;
+    margin: 0 0 0.25rem 0;
+}
+
+.stat-card-content p {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin: 0;
+}
+
+.admin-products-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+}
+
+/* Header */
+.admin-products-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #f0f2f5;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.admin-products-stats {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #495057;
+}
+
+.admin-products-stats i {
+    font-size: 2rem;
+    color: #667eea;
+}
+
+.admin-products-search {
+    flex: 1;
+    max-width: 400px;
+}
+
+.admin-products-search input {
+    width: 100%;
+    border-radius: 25px !important;
+    padding: 0.75rem 1.5rem !important;
+    padding-right: 3rem !important;
+}
+
+/* Table */
+.admin-products-table {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.admin-products-table .p-datatable-thead > tr > th {
+    background: #f8f9fa !important;
+    font-weight: 700 !important;
+    color: #495057 !important;
+    border-bottom: 2px solid #dee2e6 !important;
+    padding: 1rem !important;
+}
+
+.admin-products-table .p-datatable-tbody > tr {
+    transition: all 0.3s ease;
+}
+
+.admin-products-table .p-datatable-tbody > tr:hover {
+    background: #f8f9fa !important;
+    transform: scale(1.01);
+}
+
+.admin-products-table .p-datatable-tbody > tr > td {
+    padding: 1rem !important;
+    vertical-align: middle !important;
+}
+
+/* Product Image */
+.admin-product-image {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Product Price */
+.admin-product-price {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #667eea;
+}
+
+/* Loading State */
+.admin-products-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    gap: 1rem;
+}
+
+.admin-products-loading p {
+    font-size: 1.2rem;
+    color: #6c757d;
+    font-family: 'Heebo', sans-serif;
+}
+
+/* Dialog */
+.admin-products-dialog .p-dialog-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 12px 12px 0 0;
+}
+
+.admin-products-dialog .p-dialog-content {
+    padding: 2rem;
+}
+
+.confirmation-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    text-align: center;
+}
+
+.confirmation-content span {
+    font-size: 1.1rem;
+    color: #495057;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .admin-products-hero-title {
+        font-size: 2rem;
+    }
+
+    .admin-products-hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .admin-products-hero-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-products-add-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .admin-products-content {
+        padding: 1rem;
+    }
+
+    .admin-products-card {
+        padding: 1rem;
+    }
+
+    .admin-products-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-products-search {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .admin-products-stats {
+        font-size: 1rem;
+    }
+
+    .admin-products-stats i {
+        font-size: 1.5rem;
+    }
+
+    .admin-products-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-products-stat-card {
+        padding: 1rem;
+    }
+
+    .stat-card-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+
+    .stat-card-content h3 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Button Enhancements */
+.admin-products-table .p-button-warning {
+    background: transparent !important;
+    border-color: #ffc107 !important;
+    color: #ffc107 !important;
+}
+
+.admin-products-table .p-button-warning:hover {
+    background: #ffc107 !important;
+    color: white !important;
+}
+
+.admin-products-table .p-button-danger {
+    background: transparent !important;
+    border-color: #dc3545 !important;
+    color: #dc3545 !important;
+}
+
+.admin-products-table .p-button-danger:hover {
+    background: #dc3545 !important;
+    color: white !important;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.admin-products-card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.admin-products-hero {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+.admin-products-stat-card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.admin-products-stat-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.admin-products-stat-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.admin-products-stat-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.admin-products-stat-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+/* Striped Rows */
+.admin-products-table .p-datatable-tbody > tr.p-row-odd {
+    background: #fafbfc !important;
+}
+
+.admin-products-table .p-datatable-tbody > tr.p-row-odd:hover {
+    background: linear-gradient(to right, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05)) !important;
+}

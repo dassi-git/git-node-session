@@ -1,0 +1,130 @@
+/* Create Product Container */
+.create-product-container {
+    min-height: calc(100vh - 80px);
+    background: linear-gradient(180deg, #fafafa 0%, #ffffff 100%);
+    font-family: 'Heebo', sans-serif;
+}
+
+/* Hero Section */
+.create-product-hero {
+    background: linear-gradient(135deg, #f8f8f8 0%, #fafafa 100%);
+    padding: 4rem 2rem;
+    text-align: center;
+    color: #1a1a1a;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(155, 123, 123, 0.15);
+    box-shadow: 0 4px 20px rgba(155, 123, 123, 0.08);
+}
+
+.create-product-hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.create-product-hero-subtitle {
+    font-size: 1.2rem;
+    font-weight: 400;
+    opacity: 0.95;
+}
+
+/* Content */
+.create-product-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.create-product-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 2.5rem;
+}
+
+/* Form */
+.create-product-form {
+    width: 100%;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-field.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-field label {
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.95rem;
+}
+
+.form-field input,
+.form-field textarea {
+    border-radius: 8px;
+}
+
+/* Actions */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #f0f2f5;
+}
+
+.create-product-submit-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: none !important;
+    font-weight: 600 !important;
+    padding: 0.75rem 2rem !important;
+}
+
+.create-product-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4) !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .create-product-hero-title {
+        font-size: 2rem;
+    }
+
+    .create-product-hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .create-product-content {
+        padding: 1rem;
+    }
+
+    .create-product-card {
+        padding: 1.5rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+}
